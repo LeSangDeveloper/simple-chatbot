@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.simple.chatbot;
+package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.model.ChatMessage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class ChatServlet extends HttpServlet {
         }
 
         request.setAttribute("chatMessages", chatMessages);
-        request.getRequestDispatcher("chat.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
     }
     
     /**
@@ -56,7 +57,7 @@ public class ChatServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("chat.jsp");
+        request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
     }
  
 }

@@ -5,6 +5,7 @@
 package com.mycompany.simple_chatbot.servlet;
 
 import com.mycompany.simple_chatbot.model.ChatMessage;
+import com.mycompany.simple_chatbot.model.UserInfo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -69,9 +70,11 @@ public class LoginServlet extends HttpServlet {
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
             // TODO improve later
             if (username.equals("sang") && password.equals("123456")) {
-                request.getSession().setAttribute("userToken", "123456");
+                UserInfo user = new UserInfo("sang", "123456");
+                request.getSession().setAttribute("userInfo", user);
             }
         }
+        response.sendRedirect("/simple_chatbot/");
     }
 
     /**

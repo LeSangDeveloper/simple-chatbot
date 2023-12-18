@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.model.UserInfo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -57,10 +58,11 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.print(request.getSession().getAttribute("userToken"));
-        if (request.getSession().getAttribute("userToken") == null || !request.getSession().getAttribute("userToken").equals("123456")) {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else request.getRequestDispatcher("chat.jsp").forward(request, response);
+        System.out.print(request.getSession().getAttribute("userInfo"));
+        UserInfo userInfo = (UserInfo)request.getSession().getAttribute("userInfo");
+        if (userInfo == null || !userInfo.getUserToken().equals("123456")) {
+            response.sendRedirect("/simple_chatbot/login");
+        } else response.sendRedirect("/simple_chatbot/chat");
     }
 
     /**

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.simple.chatbot;
+package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.model.ChatMessage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

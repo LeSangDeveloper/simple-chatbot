@@ -43,7 +43,7 @@ public class ChatServlet extends HttpServlet {
         }
 
         request.setAttribute("chatMessages", chatMessages);
-        request.getRequestDispatcher("chat.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
     }
     
     /**
@@ -57,7 +57,7 @@ public class ChatServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("chat.jsp");
+        request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
     }
  
 }

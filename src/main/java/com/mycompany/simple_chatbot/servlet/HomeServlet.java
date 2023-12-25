@@ -5,6 +5,8 @@
 package com.mycompany.simple_chatbot.servlet;
 
 import com.mycompany.simple_chatbot.model.UserInfo;
+import com.mycompany.simple_chatbot.service.RedisService;
+import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "HomeServlet", urlPatterns = {"/"})
 public class HomeServlet extends HttpServlet {
 
+    private RedisService redisService = RedisServiceImpl.getInstance();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

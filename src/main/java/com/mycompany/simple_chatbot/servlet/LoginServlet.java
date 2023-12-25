@@ -6,6 +6,8 @@ package com.mycompany.simple_chatbot.servlet;
 
 import com.mycompany.simple_chatbot.model.ChatMessage;
 import com.mycompany.simple_chatbot.model.UserInfo;
+import com.mycompany.simple_chatbot.service.RedisService;
+import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 /**
  *
@@ -21,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
+    JedisPool pool = new JedisPool("localhost", 6379);
+    private RedisService redisService = RedisServiceImpl.getInstance();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,6 +53,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set("foo", "bar");
+        }
         System.out.print(request.getSession().getAttribute("userToken"));
         if (request.getSession().getAttribute("userToken") == null || !request.getSession().getAttribute("userToken").equals("123456")) {
             request.getRequestDispatcher("login.jsp").forward(request, response);

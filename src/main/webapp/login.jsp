@@ -21,5 +21,8 @@
             <br>
             <button type="submit">Send</button>
         </form>
+        <div>
+            Don't have account ? <a href="/simple_chatbot/signup">Sign Up</a>
+        </div>
     </body>
 </html>

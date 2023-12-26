@@ -9,7 +9,7 @@ package com.mycompany.simple_chatbot.model;
  * @author lesan
  */
 public class ChatMessage {
-        private String username;
+    private String username;
     private String message;
 
     public ChatMessage(String username, String message) {

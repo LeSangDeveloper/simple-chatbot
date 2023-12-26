@@ -4,7 +4,7 @@
  */
 package com.mycompany.simple_chatbot.service;
 
-import com.mycompany.simple_chatbot.model.User;
+import com.mycompany.simple_chatbot.model.Account;
 
 /**
  *
@@ -12,9 +12,9 @@ import com.mycompany.simple_chatbot.model.User;
  */
 public interface DatabaseService {
     
-    void updateUser(User user);
-    void addUser(User user);
-    User getUser(String username);
-    Boolean validateUser(User user);
+    void updateUser(Account user);
+    void addUser(Account user);
+    Account getUser(String username);
+    Boolean validateUser(Account user);
     
 }

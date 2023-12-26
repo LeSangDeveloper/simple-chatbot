@@ -13,9 +13,9 @@ import java.sql.SQLException;
  * @author lesan
  */
 public class DatabaseConnectionManager {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/testdb";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/simple_chatbot";
     private static final String JDBC_USER = "your_username";
-    private static final String JDBC_PASSWORD = "your_password";
+    private static final String JDBC_PASSWORD = "";
 
     public static Connection getConnection() throws SQLException {
         try {

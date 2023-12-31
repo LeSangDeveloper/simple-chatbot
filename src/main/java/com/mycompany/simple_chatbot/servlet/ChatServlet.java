@@ -4,6 +4,8 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.config.util.StringConstants;
+import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.ChatMessage;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,16 +36,16 @@ public class ChatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String message = request.getParameter("message");
+        String username = request.getParameter(StringConstants.USERNAME_PARAM);
+        String message = request.getParameter(StringConstants.MESSAGE_PARAM);
 
         if (username != null && message != null && !username.isEmpty() && !message.isEmpty()) {
             ChatMessage chatMessage = new ChatMessage(username, message);
             chatMessages.add(chatMessage);
         }
 
-        request.setAttribute("chatMessages", chatMessages);
-        request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
+        request.setAttribute(StringConstants.CHAT_MESSAGES_ATTRIBUTE, chatMessages);
+        request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
     }
     
     /**
@@ -57,7 +59,7 @@ public class ChatServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
+        response.sendRedirect(StringConstants.CHAT_PAGE);
     }
  
 }

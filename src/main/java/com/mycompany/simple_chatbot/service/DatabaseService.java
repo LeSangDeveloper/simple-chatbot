@@ -12,7 +12,7 @@ import com.mycompany.simple_chatbot.model.Account;
  */
 public interface DatabaseService {
     
-    void updateUser(Account user);
+    void updatePassword(String id, String password);
     void addUser(Account user);
     Account getUser(String username);
     Boolean validateUser(Account user);

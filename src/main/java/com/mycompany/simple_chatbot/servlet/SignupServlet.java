@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.model.Account;
 import com.mycompany.simple_chatbot.model.UserInfo;
 import com.mycompany.simple_chatbot.service.DatabaseService;
 import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
@@ -23,32 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SignupServlet extends HttpServlet {
 
     private final DatabaseService dbService = DatabaseServiceImpl.getInstance();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SignupServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SignupServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -81,15 +56,26 @@ public class SignupServlet extends HttpServlet {
         String surname = request.getParameter("surname");
         String middleName = request.getParameter("middleName");
         String firstName = request.getParameter("firstName");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+
+        if (dbService.getUser(id) == null) {
         
-//        if (username != null && password != null && !id.isEmpty() && !password.isEmpty()) {
-//            // TODO improve later
-//            if (username.equals("sang") && password.equals("123456")) {
-//                UserInfo user = new UserInfo("sang", "123456");
-//                request.getSession().setAttribute("userInfo", user);
-//            }
-//        }
-        response.sendRedirect("/simple_chatbot/");
+            Account user = new Account.Builder()
+                .firstName(firstName)
+                .password(password)
+                .email(email)
+                .id(id)
+                .middleName(middleName)
+                .phone(phone)
+                .surname(surname)
+                .build();
+        
+            dbService.addUser(user);
+            response.sendRedirect("/simple_chatbot/");
+        } else {
+            response.sendRedirect("/simple_chatbot/signup");
+        }
     }
 
     /**

@@ -9,20 +9,20 @@ package com.mycompany.simple_chatbot.model;
  * @author lesan
  */
 public class UserInfo {
-    private String username;
+    private String id;
     private String userToken;
 
     public UserInfo(String username, String userToken) {
-        this.username = username;
+        this.id = username;
         this.userToken = userToken;
     }
     
     public String getUsername() {
-        return username;
+        return id;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.id = username;
     }
 
     public String getUserToken() {

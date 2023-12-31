@@ -11,12 +11,12 @@
         <title>Login</title>
     </head>
     <body>
-        <form action="/simple_chatbot/login" method="post">
+        <form action="/simple_chatbot/signup" method="post">
             <label for="username">Username:</label>
             <input type="text" name="username" required>
             <br>
             <label for="password">Password</label>
-            <input type="text" name="password" required>
+            <input type="password" name="password" required>
             <br>
             <label for="surname">Surname</label>
             <input type="text" name="surname" required>

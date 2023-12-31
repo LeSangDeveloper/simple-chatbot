@@ -21,60 +21,88 @@ public class Account {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getMiddleName() {
         return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
         return phone;
     }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    
-    
     
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getPassword() {
         return password;
     }
+ 
+    public static class Builder {
+    
+        private String id;
+        private String surname;
+        private String password;
+        private String middleName;
+        private String firstName;
+        private String email;
+        private String phone;
 
-    public void setPassword(String password) {
-        this.password = password;
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public Builder surname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public Builder middleName(String middleName) {
+            this.middleName = middleName;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+    
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+        
+        public Account build() {
+            Account account = new Account();
+            account.id = this.id;
+            account.email = this.email;
+            account.firstName = this.firstName;
+            account.middleName = this.middleName;
+            account.surname = this.surname;
+            account.phone = this.phone;
+            account.password = this.password;
+            return account;
+        }
+        
     }
-    
-    
     
 }

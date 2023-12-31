@@ -4,9 +4,15 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.config.util.StringConstants;
+import com.mycompany.simple_chatbot.config.util.TokenUtils;
+import com.mycompany.simple_chatbot.config.util.URLUtils;
+import com.mycompany.simple_chatbot.model.Account;
 import com.mycompany.simple_chatbot.model.ChatMessage;
 import com.mycompany.simple_chatbot.model.UserInfo;
+import com.mycompany.simple_chatbot.service.DatabaseService;
 import com.mycompany.simple_chatbot.service.RedisService;
+import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,22 +31,9 @@ import redis.clients.jedis.JedisPool;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
-    JedisPool pool = new JedisPool("localhost", 6379);
+    private DatabaseService dbService = DatabaseServiceImpl.getInstance();
     private RedisService redisService = RedisServiceImpl.getInstance();
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-    }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -53,13 +46,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try (Jedis jedis = pool.getResource()) {
-            jedis.set("foo", "bar");
-        }
-        System.out.print(request.getSession().getAttribute("userToken"));
-        if (request.getSession().getAttribute("userToken") == null || !request.getSession().getAttribute("userToken").equals("123456")) {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else request.getRequestDispatcher("chat.jsp").forward(request, response);
+
+        if (request.getSession().getAttribute(StringConstants.USER_SESSION) == null || redisService.getValueByKey(StringConstants.USER_SESSION) == null) {
+            request.getRequestDispatcher(StringConstants.LOGIN_PAGE).forward(request, response);
+        } else request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
     }
 
     /**
@@ -73,17 +63,26 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter(StringConstants.USERNAME_PARAM);
+        String password = request.getParameter(StringConstants.PASSWORD_PARAM);
 
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
             // TODO improve later
-            if (username.equals("sang") && password.equals("123456")) {
-                UserInfo user = new UserInfo("sang", "123456");
-                request.getSession().setAttribute("userInfo", user);
+            Account account = new Account.Builder()
+                    .id(username)
+                    .password(password)
+                    .build();
+            
+            if (dbService.validateUser(account)) {
+                String token = TokenUtils.generateToken();
+                redisService.putValueByKey(token, username);
+                UserInfo info = new UserInfo(username, token);
+                request.getSession().setAttribute(StringConstants.USER_SESSION, info);
+            } else {
+            // TODO make failed login flow
             }
         }
-        response.sendRedirect("/simple_chatbot/");
+        response.sendRedirect(URLUtils.BASE_HOME);
     }
 
     /**

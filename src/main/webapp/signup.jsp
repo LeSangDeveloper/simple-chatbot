@@ -4,6 +4,7 @@
     Author     : lesan
 --%>
 
+<%@page import="com.mycompany.simple_chatbot.config.util.StringConstants"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,26 +13,26 @@
     </head>
     <body>
         <form action="/simple_chatbot/signup" method="post">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required>
+            <label for="<%= StringConstants.USERNAME_PARAM %>">Username:</label>
+            <input type="text" name="<%= StringConstants.USERNAME_PARAM %>" required>
             <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" required>
+            <label for="<%= StringConstants.PASSWORD_PARAM %>">Password</label>
+            <input type="password" name="<%= StringConstants.PASSWORD_PARAM %>" required>
             <br>
-            <label for="surname">Surname</label>
-            <input type="text" name="surname" required>
+            <label for="<%= StringConstants.SURNAME_PARAM %>">Surname</label>
+            <input type="text" name="<%= StringConstants.SURNAME_PARAM %>" required>
             <br>
-            <label for="middleName">Middle name</label>
-            <input type="text" name="middleName" required>
+            <label for="<%= StringConstants.MIDDLE_NAME_PARAM %>">Middle name</label>
+            <input type="text" name="<%= StringConstants.MIDDLE_NAME_PARAM %>" required>
             <br>
-            <label for="firstName">First name</label>
-            <input type="text" name="firstName" required>
+            <label for="<%= StringConstants.FIRST_NAME_PARAM %>">First name</label>
+            <input type="text" name="<%= StringConstants.FIRST_NAME_PARAM %>" required>
             <br>
-            <label for="email">Email</label>
-            <input type="text" name="email" required>
+            <label for="<%= StringConstants.EMAIL_PARAM %>">Email</label>
+            <input type="text" name="<%= StringConstants.EMAIL_PARAM %>" required>
             <br>
-            <label for="Phone">Phone</label>
-            <input type="text" name="phone" required>
+            <label for="<%= StringConstants.PHONE_PARAM %>">Phone</label>
+            <input type="text" name="<%= StringConstants.PHONE_PARAM %>" required>
             <br>
             <button type="submit">Send</button>
         </form>

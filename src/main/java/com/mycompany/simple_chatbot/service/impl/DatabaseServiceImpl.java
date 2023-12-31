@@ -120,7 +120,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         boolean correct=false;
 
         try(Connection conn=DatabaseConnectionManager.getConnection()){
-            Statement stmt=conn.createStatement();//   test';
+            Statement stmt=conn.createStatement();
             ResultSet rs=stmt.executeQuery("select * from account where id='"+user.getId()+"'");
             if(rs.next()){
                 

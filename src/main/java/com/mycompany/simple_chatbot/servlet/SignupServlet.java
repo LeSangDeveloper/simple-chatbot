@@ -4,6 +4,8 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.config.util.StringConstants;
+import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
 import com.mycompany.simple_chatbot.model.UserInfo;
 import com.mycompany.simple_chatbot.service.DatabaseService;
@@ -37,7 +39,7 @@ public class SignupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("signup.jsp");
+        response.sendRedirect(URLUtils.SIGNUP_URL);
     }
 
     /**
@@ -51,13 +53,13 @@ public class SignupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("username");
-        String password = request.getParameter("password");
-        String surname = request.getParameter("surname");
-        String middleName = request.getParameter("middleName");
-        String firstName = request.getParameter("firstName");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
+        String id = request.getParameter(StringConstants.USERNAME_PARAM);
+        String password = request.getParameter(StringConstants.PASSWORD_PARAM);
+        String surname = request.getParameter(StringConstants.SURNAME_PARAM);
+        String middleName = request.getParameter(StringConstants.MIDDLE_NAME_PARAM);
+        String firstName = request.getParameter(StringConstants.FIRST_NAME_PARAM);
+        String phone = request.getParameter(StringConstants.PHONE_PARAM);
+        String email = request.getParameter(StringConstants.EMAIL_PARAM);
 
         if (dbService.getUser(id) == null) {
         
@@ -72,9 +74,9 @@ public class SignupServlet extends HttpServlet {
                 .build();
         
             dbService.addUser(user);
-            response.sendRedirect("/simple_chatbot/");
+            response.sendRedirect(URLUtils.BASE_HOME);
         } else {
-            response.sendRedirect("/simple_chatbot/signup");
+            response.sendRedirect(URLUtils.SIGNUP_URL);
         }
     }
 

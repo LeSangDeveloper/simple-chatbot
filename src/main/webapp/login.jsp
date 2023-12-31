@@ -4,6 +4,7 @@
     Author     : lesan
 --%>
 
+<%@page import="com.mycompany.simple_chatbot.config.util.StringConstants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,11 +14,11 @@
     </head>
     <body>
         <form action="/simple_chatbot/login" method="post">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required>
+            <label for="<%= StringConstants.USERNAME_PARAM %>">Username:</label>
+            <input type="text" name="<%= StringConstants.USERNAME_PARAM %>" required>
             <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" required>
+            <label for="<%= StringConstants.PASSWORD_PARAM %>">Password</label>
+            <input type="password" name="<%= StringConstants.PASSWORD_PARAM %>" required>
             <br>
             <button type="submit">Send</button>
         </form>

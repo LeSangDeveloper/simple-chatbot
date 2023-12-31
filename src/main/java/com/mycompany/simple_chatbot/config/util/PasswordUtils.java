@@ -35,7 +35,7 @@ public class PasswordUtils {
     
     public static boolean validatePassword(String enteredPassword, String storedSalt, String storedHashedPassword) throws Exception {
         String enteredPasswordWithSalt = enteredPassword + storedSalt;
-        String hashedEnteredPassword = hashPassword(enteredPasswordWithSalt, storedSalt);
+        String hashedEnteredPassword = hashPassword(enteredPassword, storedSalt);
         return hashedEnteredPassword.equals(storedHashedPassword);
     }
     

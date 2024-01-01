@@ -25,5 +25,8 @@
         <div>
             Don't have account ? <a href="/simple_chatbot/signup">Sign Up</a>
         </div>
+        <div>
+            Forgot Password ? <a href="/simple_chatbot/forgotPassword">Forgot Password</a>
+        </div>
     </body>
 </html>

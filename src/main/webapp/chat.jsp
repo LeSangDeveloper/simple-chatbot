@@ -15,6 +15,11 @@
         UserInfo info = (UserInfo)request.getSession().getAttribute("userInfo");
     %>
     
+        <!-- Logout button -->
+    <form action="logout" method="get">
+        <input type="submit" value="Logout">
+    </form>
+    
     <form action="chat" method="post">
         <input type="hidden" name="username" value="<%=info.getUsername()%>" required>
         <label for="message">Message:</label>

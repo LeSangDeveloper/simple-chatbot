@@ -8,12 +8,6 @@ import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.TokenUtils;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
-import com.mycompany.simple_chatbot.model.ChatMessage;
-import com.mycompany.simple_chatbot.model.UserInfo;
-import com.mycompany.simple_chatbot.service.DatabaseService;
-import com.mycompany.simple_chatbot.service.RedisService;
-import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
-import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -21,19 +15,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
+import com.mycompany.simple_chatbot.service.DatabaseService;
+import com.mycompany.simple_chatbot.service.RedisService;
+import com.mycompany.simple_chatbot.service.EmailService;
+import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
+import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
+import com.mycompany.simple_chatbot.service.impl.EmailServiceImpl;
 /**
  *
  * @author lesan
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/forgotPassword"})
+public class ForgotPasswordServlet extends HttpServlet {
 
-    private DatabaseService dbService = DatabaseServiceImpl.getInstance();
-    private RedisService redisService = RedisServiceImpl.getInstance();
+    private final DatabaseService dbService = DatabaseServiceImpl.getInstance();
+    private final RedisService redisService = RedisServiceImpl.getInstance();
+    private final EmailService emailService = EmailServiceImpl.getInstance();
     
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -45,10 +45,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        if (request.getSession().getAttribute(StringConstants.USER_SESSION) == null || redisService.getValueByKey(StringConstants.USER_SESSION) == null) {
-            request.getRequestDispatcher(StringConstants.LOGIN_PAGE).forward(request, response);
-        } else request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
+        request.getRequestDispatcher(StringConstants.FORGOT_PASSWORD_PAGE).forward(request, response);
     }
 
     /**
@@ -63,25 +60,16 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter(StringConstants.USERNAME_PARAM);
-        String password = request.getParameter(StringConstants.PASSWORD_PARAM);
-
-        if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
-            // TODO improve later
-            Account account = new Account.Builder()
-                    .id(username)
-                    .password(password)
-                    .build();
+        
+        Account acc = dbService.getUser(username);
+        
+        if (acc != null) {
+            String email = acc.getEmail();
+            String token = TokenUtils.generateToken();
             
-            if (dbService.validateUser(account)) {
-                String token = TokenUtils.generateToken();
-                redisService.putValueByKey(token, username);
-                UserInfo info = new UserInfo(username, token);
-                request.getSession().setAttribute(StringConstants.USER_SESSION, info);
-            } else {
-            // TODO make failed login flow
-            }
+            redisService.putValueByKetWithTimeInSec(token, acc.getId(), 180L);
+            emailService.sendEmail(email, token);
         }
-        response.sendRedirect(URLUtils.BASE_HOME);
     }
 
     /**

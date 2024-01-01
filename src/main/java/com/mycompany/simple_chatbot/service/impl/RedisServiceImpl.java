@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.service.impl;
 
+import com.mycompany.simple_chatbot.config.ConfigManager;
 import com.mycompany.simple_chatbot.service.RedisService;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -16,12 +17,13 @@ public class RedisServiceImpl implements RedisService {
 
     private String message;
     private JedisPool pool;
+    private ConfigManager config = ConfigManager.getInstance();
     
     private static final RedisServiceImpl INSTANCE = new RedisServiceImpl();
     
     private RedisServiceImpl() {
         // Private constructor to prevent instantiation.
-        pool = new JedisPool("localhost", 6379);
+        pool = new JedisPool(config.getRedisHost(), 6379);
     }
     
     public static RedisServiceImpl getInstance() {
@@ -39,6 +41,14 @@ public class RedisServiceImpl implements RedisService {
     public Boolean putValueByKey(String key, String value) {
         try (Jedis jedis = pool.getResource()) {
             jedis.set(key, value);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean putValueByKetWithTimeInSec(String key, String value, Long timeInSec) {
+        try (Jedis jedis = pool.getResource()) {
+            jedis.setex(key, timeInSec, value);
         }
         return true;
     }

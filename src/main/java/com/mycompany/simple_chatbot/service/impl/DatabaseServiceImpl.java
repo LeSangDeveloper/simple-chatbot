@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.service.impl;
 
+import com.mycompany.simple_chatbot.config.ConfigManager;
 import com.mycompany.simple_chatbot.config.DatabaseConnectionManager;
 import com.mycompany.simple_chatbot.config.util.DatabaseColumnConstants;
 import com.mycompany.simple_chatbot.config.util.PasswordUtils;

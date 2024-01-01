@@ -4,8 +4,6 @@
  */
 package com.mycompany.simple_chatbot.service.impl;
 
-import com.mycompany.simple_chatbot.model.request.ChatbotRequest;
-import com.mycompany.simple_chatbot.model.response.ChatbotResponse;
 import com.mycompany.simple_chatbot.service.ChatbotService;
 import org.json.JSONObject;
 

@@ -4,8 +4,6 @@
  */
 package com.mycompany.simple_chatbot.service;
 
-import com.mycompany.simple_chatbot.model.request.ChatbotRequest;
-import com.mycompany.simple_chatbot.model.response.ChatbotResponse;
 
 /**
  *

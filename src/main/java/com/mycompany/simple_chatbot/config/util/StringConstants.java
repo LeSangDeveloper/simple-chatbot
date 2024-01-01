@@ -23,6 +23,7 @@ public class StringConstants {
     public static String LOGIN_PAGE = "login.jsp";
     public static String SIGNUP_PAGE = "signup.jsp";
     public static String CHAT_PAGE = "chat.jsp";
+    public static String FORGOT_PASSWORD_PAGE = "forgot_password.jsp";
     
     public static String CHAT_MESSAGES_ATTRIBUTE = "chatMessages";
 }

@@ -12,5 +12,6 @@ public interface RedisService {
     
     String getValueByKey(String key);
     Boolean putValueByKey(String key, String value);
+    Boolean putValueByKetWithTimeInSec(String key, String value, Long time);
     
 }

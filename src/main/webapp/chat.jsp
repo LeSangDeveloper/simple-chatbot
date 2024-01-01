@@ -32,6 +32,8 @@
                     for (ChatMessage chatMessage : chatMessages) {
             %>
                         <li><strong><%= chatMessage.getUsername() %>:</strong> <%= chatMessage.getMessage() %></li>
+                        <li><strong>chatbot:</strong> <%= chatMessage.getResponse() %></li>
+                        <div style="margin-top: 20px;"></div>
             <%
                     }
                 }

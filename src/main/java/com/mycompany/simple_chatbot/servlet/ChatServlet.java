@@ -7,6 +7,8 @@ package com.mycompany.simple_chatbot.servlet;
 import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.ChatMessage;
+import com.mycompany.simple_chatbot.service.ChatbotService;
+import com.mycompany.simple_chatbot.service.impl.ChatbotServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -26,7 +28,9 @@ public class ChatServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private List<ChatMessage> chatMessages;
-
+    
+    private ChatbotService chatbot = ChatbotServiceImpl.getInstance();
+    
     @Override
     public void init() throws ServletException {
         super.init();
@@ -40,7 +44,8 @@ public class ChatServlet extends HttpServlet {
         String message = request.getParameter(StringConstants.MESSAGE_PARAM);
 
         if (username != null && message != null && !username.isEmpty() && !message.isEmpty()) {
-            ChatMessage chatMessage = new ChatMessage(username, message);
+            String chatbotResponse = chatbot.sendMessage(message);
+            ChatMessage chatMessage = new ChatMessage(username, message, chatbotResponse);
             chatMessages.add(chatMessage);
         }
 

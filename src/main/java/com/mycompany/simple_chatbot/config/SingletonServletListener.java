@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.config;
 
+import com.mycompany.simple_chatbot.service.impl.ChatbotServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import javax.servlet.ServletContextEvent;
@@ -21,6 +22,7 @@ public class SingletonServletListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         RedisServiceImpl.getInstance();
         DatabaseServiceImpl.getInstance();
+        ChatbotServiceImpl.getInstance();
     }
 
     @Override

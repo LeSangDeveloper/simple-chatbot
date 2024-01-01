@@ -11,12 +11,24 @@ package com.mycompany.simple_chatbot.model;
 public class ChatMessage {
     private String username;
     private String message;
+    private String response;
 
-    public ChatMessage(String username, String message) {
+    public ChatMessage(String username, String message, String response) {
         this.username = username;
         this.message = message;
+        this.response = response;
     }
 
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    
+    
     public String getUsername() {
         return username;
     }

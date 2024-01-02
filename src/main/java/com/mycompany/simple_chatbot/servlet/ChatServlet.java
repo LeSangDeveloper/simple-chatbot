@@ -42,15 +42,17 @@ public class ChatServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter(StringConstants.USERNAME_PARAM);
         String message = request.getParameter(StringConstants.MESSAGE_PARAM);
-
+        String chatbotResponse = "";
+        
         if (username != null && message != null && !username.isEmpty() && !message.isEmpty()) {
-            String chatbotResponse = chatbot.sendMessage(message);
+            chatbotResponse = chatbot.sendMessage(message);
             ChatMessage chatMessage = new ChatMessage(username, message, chatbotResponse);
             chatMessages.add(chatMessage);
         }
 
-        request.setAttribute(StringConstants.CHAT_MESSAGES_ATTRIBUTE, chatMessages);
-        request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
+//        request.setAttribute(StringConstants.CHAT_MESSAGES_ATTRIBUTE, chatMessages);
+//        request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
+        response.getWriter().write(chatbotResponse.replaceAll(message, ""));
     }
     
     /**

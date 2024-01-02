@@ -20,7 +20,7 @@ public class DatabaseConnectionManager {
     static{
         try {
             //加入 Class.forName
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(config.getDbDriver());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DatabaseConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
         }

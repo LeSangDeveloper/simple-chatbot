@@ -6,7 +6,6 @@ package com.mycompany.simple_chatbot.config;
 
 import com.mycompany.simple_chatbot.service.impl.ChatbotServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
-import com.mycompany.simple_chatbot.service.impl.EmailServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -25,7 +24,6 @@ public class SingletonServletListener implements ServletContextListener {
         RedisServiceImpl.getInstance();
         DatabaseServiceImpl.getInstance();
         ChatbotServiceImpl.getInstance();
-        EmailServiceImpl.getInstance();
     }
 
     @Override

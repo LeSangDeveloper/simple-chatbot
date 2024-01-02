@@ -60,12 +60,4 @@ public class ConfigManager {
     public Integer getRedisPort() {
         return Integer.valueOf(properties.getProperty("redis.port"));
     }
-    
-    public String getEmailUsername() {
-        return properties.getProperty("mail.username");
-    }
-    
-    public String getEmailPassword() {
-        return properties.getProperty("mail.password");
-    }
 }

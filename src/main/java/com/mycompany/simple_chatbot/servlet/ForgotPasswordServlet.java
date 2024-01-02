@@ -18,10 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mycompany.simple_chatbot.service.DatabaseService;
 import com.mycompany.simple_chatbot.service.RedisService;
-import com.mycompany.simple_chatbot.service.EmailService;
 import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
-import com.mycompany.simple_chatbot.service.impl.EmailServiceImpl;
 /**
  *
  * @author lesan
@@ -31,7 +29,6 @@ public class ForgotPasswordServlet extends HttpServlet {
 
     private final DatabaseService dbService = DatabaseServiceImpl.getInstance();
     private final RedisService redisService = RedisServiceImpl.getInstance();
-    private final EmailService emailService = EmailServiceImpl.getInstance();
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -68,7 +65,6 @@ public class ForgotPasswordServlet extends HttpServlet {
             String token = TokenUtils.generateToken();
             
             redisService.putValueByKetWithTimeInSec(token, acc.getId(), 180L);
-            emailService.sendEmail(email, token);
         }
     }
 

@@ -74,7 +74,6 @@
     
     <div class="w-100 container-fluid">
         <div class="row">
-                %>
             <div id="sidebar" class="col-2">
                 <div class="flex h-full w-full flex-col">
                     <div class="flex-col flex-1 transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">

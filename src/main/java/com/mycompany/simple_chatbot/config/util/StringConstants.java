@@ -26,4 +26,6 @@ public class StringConstants {
     public static String FORGOT_PASSWORD_PAGE = "forgot_password.jsp";
     
     public static String CHAT_MESSAGES_ATTRIBUTE = "chatMessages";
+    public static String CONVERSATIONS_ATTRIBUTE = "conservations";
+    public static String CHAT_USER_ATTRIBUTE = "username";
 }

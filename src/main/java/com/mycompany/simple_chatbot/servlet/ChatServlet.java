@@ -81,8 +81,6 @@ public class ChatServlet extends HttpServlet {
             messageService.insertMessage(chatMessage);
         }
 
-//        request.setAttribute(StringConstants.CHAT_MESSAGES_ATTRIBUTE, chatMessages);
-//        request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
         response.getWriter().write(chatbotResponse.replaceAll(message, ""));
     }
     
@@ -101,7 +99,16 @@ public class ChatServlet extends HttpServlet {
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
         if (userInfo == null || redisService.getValueByKey(userInfo.getUserToken()) == null) {
             response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL));
-        } else request.setAttribute("username", redisService.getValueByKey(userInfo.getUserToken()));
+        } else 
+        {
+            String username = redisService.getValueByKey(userInfo.getUserToken());
+            List<Conversation> cons = conversationService.getConversationsByUserId(username);
+            request.setAttribute(StringConstants.CHAT_USER_ATTRIBUTE, username);
+            request.setAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE, cons);
+        }
+        
+//        request.setAttribute(StringConstants.CHAT_MESSAGES_ATTRIBUTE, chatMessages);
+//        request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
         
         request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
     }

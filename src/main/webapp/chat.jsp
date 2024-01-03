@@ -1,3 +1,5 @@
+<%@page import="com.mycompany.simple_chatbot.model.Conversation"%>
+<%@page import="com.mycompany.simple_chatbot.config.util.StringConstants"%>
 <%@page import="com.mycompany.simple_chatbot.model.UserInfo"%>
 <%@page import="com.mycompany.simple_chatbot.model.ChatMessage"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -19,14 +21,6 @@
 
         .container {
             display: flex;
-            height: 100vh;
-        }
-
-        #sidebar {
-            flex: 0 0 20%;
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-right: 1px solid #dee2e6;
             height: 100vh;
         }
 
@@ -68,21 +62,67 @@
             flex-grow: 1;
             margin-right: 10px;
         }
+        
+/*        #sidebar {
+            flex: 0 0 20%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-right: 1px solid #dee2e6;
+            height: 100vh;
+        }*/
+        
+        #sidebar {
+            flex: 0 0 20%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-right: 1px solid #dee2e6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #sidebar .flex-col:first-child {
+            flex: 0 0 100%;
+            transition: flex 0.5s; /* Optional: Add a transition for a smooth change in flex value */
+        }
+        
+        .flex-80p {
+            flex: 0 0 80%!important;
+        }
+        
+        .d-flex {
+            display: flex;
+        }
+        
+        .flex-d-col {
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
     
     <div class="w-100 container-fluid">
         <div class="row">
-            <div id="sidebar" class="col-2">
-                <div class="flex h-full w-full flex-col">
-                    <div class="flex-col flex-1 transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
-                        <ul>
-                            <li>Chat 1</li>
+            <div id="sidebar">
+                <div class="flex d-flex h-full w-full flex-col px-3 pb-3.5" style="flex-direction: column">
+                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 10%">
+                        <button>New Chat</button>
+                    </div>
+                    <div class="flex d-flex flex-col flex-1 flex-80p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
+                        <ul id="listConversations">
+                            <%
+                                List<Conversation> conversations=(List)request.getAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE);
+                                for(int i=0; conversations!=null && i<conversations.size() ;i++){
+                                    Conversation conservation=conversations.get(i);
+                            %>
+                            <li onclick="getMessagesByConversationId('<%=conservation.getId()%>')"><%=conservation.getName()%></li>
+                            <%
+                                }
+                            %>
                         </ul>
                     </div>
-                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20">
-                        <div id="username"><%= request.getAttribute("username") %></div>
+                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 10%">
+                        <div id="username"><%= request.getAttribute(StringConstants.CHAT_USER_ATTRIBUTE) %></div>
                         <!-- Logout button -->
                         <form action="logout" method="get" class="mb-3">
                             <button type="submit" class="btn btn-danger">Logout</button>
@@ -112,7 +152,6 @@
 
     <script> 
         var conversationToken = "";
-        
         function generateUniqueToken() {
             // Generate a timestamp component
             const timestamp = new Date().getTime().toString(16);
@@ -124,6 +163,27 @@
             const uniqueToken = timestamp + randomPart;
 
             return uniqueToken;
+        }
+
+        function getMessagesByConversationId(id) {
+            var chatbox = $("#chatbox");
+            
+            $.ajax({
+                url: "messages",
+                type: "POST",
+                data: {conversationId: id },
+                success: function(response) {
+                    chatbox.empty();
+                    
+                    response.forEach(function(item) {
+                        chatbox.append("<p>User: " + item.message + "</p>");
+                        chatbox.append("<p>Chatbot: " + item.response + "</p>");
+                    });
+               },
+               error: function() {
+                    console.log("Error in AJAX request");
+                }
+            });
         }
 
         function sendMessage() {

@@ -68,7 +68,7 @@ public class ConversationDatabaseServiceImpl implements ConversationDatabaseServ
         try {
             String selectSql = "SELECT * FROM " + DatabaseColumnConstants.TABLE_CONVERSTION 
                     + " WHERE " + DatabaseColumnConstants.COLUMN_USER_ID
-                    + " = ? ORDER BY " + DatabaseColumnConstants.COLUMN_CREATED_DATE;
+                    + " = ? ORDER BY " + DatabaseColumnConstants.COLUMN_CREATED_DATE + " DESC";
 
             try (PreparedStatement preparedStatement = DatabaseConnectionManager.getConnection().prepareStatement(selectSql)) {
                 preparedStatement.setString(1, userId);

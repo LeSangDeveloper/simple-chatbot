@@ -36,7 +36,6 @@ public class HomeServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -49,9 +48,14 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
-        if (userInfo == null || redisService.getValueByKey(userInfo.getUserToken()) == null) {
+        String tokenValue = redisService.getValueByKey(userInfo == null ? "" : userInfo.getUserToken());
+        if (userInfo == null || tokenValue == null) {
             response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL));
-        } else response.sendRedirect(URLUtils.getFullURL(URLUtils.CHAT_URL));
+        } else 
+        {
+            String url = URLUtils.getFullURL(URLUtils.CHAT_URL);
+            response.sendRedirect(url);
+        }
     }
 
     /**

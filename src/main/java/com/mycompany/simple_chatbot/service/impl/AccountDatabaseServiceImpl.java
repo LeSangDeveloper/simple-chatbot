@@ -4,33 +4,31 @@
  */
 package com.mycompany.simple_chatbot.service.impl;
 
-import com.mycompany.simple_chatbot.config.ConfigManager;
 import com.mycompany.simple_chatbot.config.DatabaseConnectionManager;
 import com.mycompany.simple_chatbot.config.util.DatabaseColumnConstants;
 import com.mycompany.simple_chatbot.config.util.PasswordUtils;
 import com.mycompany.simple_chatbot.model.Account;
-import com.mycompany.simple_chatbot.service.DatabaseService;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.mycompany.simple_chatbot.service.AccountDatabaseService;
 
 /**
  *
  * @author lesan
  */
-public class DatabaseServiceImpl implements DatabaseService {
+public class AccountDatabaseServiceImpl implements AccountDatabaseService {
 
-    private final static DatabaseServiceImpl INSTANCE = new DatabaseServiceImpl();
+    private final static AccountDatabaseServiceImpl INSTANCE = new AccountDatabaseServiceImpl();
     
-    public static DatabaseServiceImpl getInstance() {
+    public static AccountDatabaseServiceImpl getInstance() {
         return INSTANCE;
     }
     
-    private DatabaseServiceImpl() {
+    private AccountDatabaseServiceImpl() {
     }
     
     @Override
@@ -41,16 +39,16 @@ public class DatabaseServiceImpl implements DatabaseService {
             String salt = PasswordUtils.generateSalt();
             String passwordHashed = PasswordUtils.hashPassword(password, salt);
             
-            String sql="update account set "+DatabaseColumnConstants.COLUMN_HASHED_PASSWORD+"='"+passwordHashed+"' where id='"+user+"'";
+            String sql="update " + DatabaseColumnConstants.TABLE_ACCOUNT + " set "+DatabaseColumnConstants.COLUMN_HASHED_PASSWORD+"='"+passwordHashed+"' where id='"+user+"'";
             stmt.executeUpdate(sql);
             
             sql="update account set "+DatabaseColumnConstants.COLUMN_SALT+"='"+salt+"' where id='"+user+"'";
             stmt.executeUpdate(sql);
             //////////////
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -58,10 +56,10 @@ public class DatabaseServiceImpl implements DatabaseService {
     public void addUser(Account user) {
         try (Connection conn=DatabaseConnectionManager.getConnection()) {
             Statement stmt=conn.createStatement();
-            String id=user.getId(); //test
+            String id=user.getId();
             String salt = PasswordUtils.generateSalt();
             String passwordHashed = PasswordUtils.hashPassword(user.getPassword(), salt);
-            String sql="insert into account (" + DatabaseColumnConstants.COLUMN_ID
+            String sql="insert into " + DatabaseColumnConstants.TABLE_ACCOUNT + " (" + DatabaseColumnConstants.COLUMN_ID
                     + ", " + DatabaseColumnConstants.COLUMN_HASHED_PASSWORD
                     + ", " + DatabaseColumnConstants.COLUMN_SALT
                     + ", " + DatabaseColumnConstants.COLUMN_SURNAME
@@ -74,9 +72,9 @@ public class DatabaseServiceImpl implements DatabaseService {
             stmt.executeUpdate(sql);
             //////////////
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -86,7 +84,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         
         try(Connection conn=DatabaseConnectionManager.getConnection()){
             Statement stmt=conn.createStatement();//   test';
-            ResultSet rs=stmt.executeQuery("select * from account where id='"+username+"'");
+            ResultSet rs=stmt.executeQuery("select * from " + DatabaseColumnConstants.TABLE_ACCOUNT + " where id='"+username+"'");
 
             if(rs.next()){
                 
@@ -110,7 +108,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             }
             
         } catch (SQLException ex) {
-                Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return account;
@@ -122,7 +120,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         try(Connection conn=DatabaseConnectionManager.getConnection()){
             Statement stmt=conn.createStatement();
-            ResultSet rs=stmt.executeQuery("select * from account where id='"+user.getId()+"'");
+            ResultSet rs=stmt.executeQuery("select * from " + DatabaseColumnConstants.TABLE_ACCOUNT + " where id='"+user.getId()+"'");
             if(rs.next()){
                 
                 String passwordHashed = rs.getString(DatabaseColumnConstants.COLUMN_HASHED_PASSWORD);
@@ -131,12 +129,12 @@ public class DatabaseServiceImpl implements DatabaseService {
                 try {
                     correct = PasswordUtils.validatePassword(user.getPassword(), salt, passwordHashed);
                 } catch (Exception ex) {
-                    Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
             }
         } catch (SQLException ex) {
-                Logger.getLogger(DatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AccountDatabaseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
             
         return correct;

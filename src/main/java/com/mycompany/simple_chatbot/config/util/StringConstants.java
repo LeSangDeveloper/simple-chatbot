@@ -19,7 +19,7 @@ public class StringConstants {
     public static String EMAIL_PARAM = "email";
     public static String PHONE_PARAM = "phone";
     public static String MESSAGE_PARAM = "message";
-    
+    public static String CONVERSATION_TOKEN_PARAM ="conversationToken";
     public static String LOGIN_PAGE = "login.jsp";
     public static String SIGNUP_PAGE = "signup.jsp";
     public static String CHAT_PAGE = "chat.jsp";

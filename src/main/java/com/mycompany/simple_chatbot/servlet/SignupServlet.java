@@ -8,8 +8,7 @@ import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
 import com.mycompany.simple_chatbot.model.UserInfo;
-import com.mycompany.simple_chatbot.service.DatabaseService;
-import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
+import com.mycompany.simple_chatbot.service.impl.AccountDatabaseServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.mycompany.simple_chatbot.service.AccountDatabaseService;
 
 /**
  *
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SignupServlet", urlPatterns = {"/signup"})
 public class SignupServlet extends HttpServlet {
 
-    private final DatabaseService dbService = DatabaseServiceImpl.getInstance();
+    private final AccountDatabaseService dbService = AccountDatabaseServiceImpl.getInstance();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

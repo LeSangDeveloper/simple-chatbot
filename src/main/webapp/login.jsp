@@ -36,7 +36,7 @@
     <!-- Body -->
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
         <div class="text-center mb-3">
-            <h2>Login</h2>
+            <h2 style="color: #511b11">Login</h2>
         </div>
         <form action="/simple_chatbot/login" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
             <div class="mb-3">
@@ -49,7 +49,7 @@
                 <input type="password" class="form-control" name="<%= StringConstants.PASSWORD_PARAM %>" required>
                 <div class="invalid-feedback">Please enter your password.</div>
             </div>
-            <button class="btn btn-primary" type="submit">Login</button>
+                <button class="btn text-light" style="background: #5860c3;" type="submit">Login</button>
         </form>
         <div class="mt-3">
             Don't have an account? <a href="/simple_chatbot/signup">Sign Up</a>

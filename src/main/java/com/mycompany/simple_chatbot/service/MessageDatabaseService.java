@@ -4,17 +4,16 @@
  */
 package com.mycompany.simple_chatbot.service;
 
-import com.mycompany.simple_chatbot.model.Account;
+import com.mycompany.simple_chatbot.model.ChatMessage;
+import java.util.List;
 
 /**
  *
  * @author lesan
  */
-public interface DatabaseService {
+public interface MessageDatabaseService {
     
-    void updatePassword(String id, String password);
-    void addUser(Account user);
-    Account getUser(String username);
-    Boolean validateUser(Account user);
+    List<ChatMessage> getListMessagesByConversationId(String conservationId);
+    void insertMessage(ChatMessage message);
     
 }

@@ -37,7 +37,7 @@
         <!-- Body Content -->
         <div class="container-fluid d-flex flex-column justify-content-center align-items-center py-3" style="min-height: 80vh;">
             <div class="text-center mb-4">
-                <h2>Sign Up</h2>
+                <h2 style="color: #511b11">Sign Up</h2>
             </div>
             <div class="w-100 max-width-500"> <!-- Set a maximum width for the form -->
                 <form action="/simple_chatbot/signup" method="post" class="g-3 needs-validation" novalidate>
@@ -70,7 +70,7 @@
                 <input type="tel" class="form-control" name="<%= StringConstants.PHONE_PARAM %>" required>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button type="submit" class="btn text-light" style="background: #5860c3">Sign Up</button>
             </div>
         </form>
             </div>

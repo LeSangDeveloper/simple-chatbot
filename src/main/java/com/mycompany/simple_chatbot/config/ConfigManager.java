@@ -60,4 +60,8 @@ public class ConfigManager {
     public Integer getRedisPort() {
         return Integer.valueOf(properties.getProperty("redis.port"));
     }
+    
+    public String getChatServiceUrl() {
+        return properties.getProperty("service.chat.url");
+    }
 }

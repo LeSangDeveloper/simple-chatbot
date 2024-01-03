@@ -17,6 +17,8 @@ public class Account {
     private String email;
     private String phone;
 
+    private Account() {}
+    
     public String getSurname() {
         return surname;
     }

@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.service.impl;
 
+import com.mycompany.simple_chatbot.config.ConfigManager;
 import com.mycompany.simple_chatbot.service.ChatbotService;
 import org.json.JSONObject;
 
@@ -23,21 +24,20 @@ import java.util.logging.Logger;
 public class ChatbotServiceImpl implements ChatbotService {
 
     private static final ChatbotServiceImpl INSTANCE = new ChatbotServiceImpl(); 
-    private final String url;
+    private final ConfigManager config = ConfigManager.getInstance();
     
     public static ChatbotServiceImpl getInstance() {
         return INSTANCE;
     }
     
     private ChatbotServiceImpl() {
-       url = "http://127.0.0.1:5000/chat";
     }
     
     @Override
     public String sendMessage(String userInput) {
         try {
             // Create URL object
-            URL chatUrl = new URL(url);
+            URL chatUrl = new URL(config.getChatServiceUrl());
 
             // Open connection
             HttpURLConnection connection = (HttpURLConnection) chatUrl.openConnection();

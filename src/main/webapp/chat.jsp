@@ -82,6 +82,7 @@
                         </ul>
                     </div>
                     <div class="flex flex-col pt-2 empty:hidden dark:border-white/20">
+                        <div id="username"><%= request.getAttribute("username") %></div>
                         <!-- Logout button -->
                         <form action="logout" method="get" class="mb-3">
                             <button type="submit" class="btn btn-danger">Logout</button>
@@ -99,6 +100,7 @@
             <input type="text" id="userInput" class="form-control" placeholder="Type your message...">
             <button class="btn btn-primary" onclick="sendMessage()">Send</button>
         </div>
+        
     </div>
             
         </div>
@@ -108,12 +110,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    <script>
+    <script> 
+        var conversationToken = "";
+        
+        function generateUniqueToken() {
+            // Generate a timestamp component
+            const timestamp = new Date().getTime().toString(16);
+
+            // Generate a random component
+            const randomPart = Math.random().toString(16).substring(2);
+
+            // Combine timestamp and random part
+            const uniqueToken = timestamp + randomPart;
+
+            return uniqueToken;
+        }
+
         function sendMessage() {
             var userInput = $("#userInput").val();
+            var username = $("#username").text();
+            console.log(username);
             var chatbox = $("#chatbox");
             var waitingBubble = chatbox.find(".waiting-bubble");
-
+            
+            if (conversationToken === "") {
+                conversationToken = generateUniqueToken();
+            }
+            
             chatbox.append("<p>User: " + userInput + "</p>");
 
             // Display waiting bubble
@@ -131,7 +154,7 @@
             $.ajax({
                 url: "chat",
                 type: "POST",
-                data: {username: 'user', message: userInput },
+                data: {username: username, message: userInput, conversationToken: conversationToken },
                 success: function(response) {
                     // Hide waiting bubble
                     waitingBubble.hide();
@@ -158,6 +181,9 @@
             // For simplicity, this example doesn't include the server-side logic.
             // You need to implement the logic in the ChatbotServlet class.
             }
+            
+        conversationToken = generateUniqueToken();
+        
     </script>
     
 </body>

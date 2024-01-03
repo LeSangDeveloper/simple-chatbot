@@ -10,9 +10,8 @@ import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
 import com.mycompany.simple_chatbot.model.ChatMessage;
 import com.mycompany.simple_chatbot.model.UserInfo;
-import com.mycompany.simple_chatbot.service.DatabaseService;
 import com.mycompany.simple_chatbot.service.RedisService;
-import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
+import com.mycompany.simple_chatbot.service.impl.AccountDatabaseServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import com.mycompany.simple_chatbot.service.AccountDatabaseService;
 
 /**
  *
@@ -31,7 +31,7 @@ import redis.clients.jedis.JedisPool;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
-    private DatabaseService dbService = DatabaseServiceImpl.getInstance();
+    private AccountDatabaseService dbService = AccountDatabaseServiceImpl.getInstance();
     private RedisService redisService = RedisServiceImpl.getInstance();
     
     /**
@@ -81,7 +81,8 @@ public class LoginServlet extends HttpServlet {
             // TODO make failed login flow
             }
         }
-        response.sendRedirect(URLUtils.BASE_HOME);
+        String url = URLUtils.getFullURL(URLUtils.CHAT_URL);
+        response.sendRedirect(url);
     }
 
     /**

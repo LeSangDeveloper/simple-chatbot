@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mycompany.simple_chatbot.service.DatabaseService;
 import com.mycompany.simple_chatbot.service.RedisService;
-import com.mycompany.simple_chatbot.service.impl.DatabaseServiceImpl;
+import com.mycompany.simple_chatbot.service.impl.AccountDatabaseServiceImpl;
 import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
+import com.mycompany.simple_chatbot.service.AccountDatabaseService;
 /**
  *
  * @author lesan
@@ -27,7 +27,7 @@ import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 @WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/forgotPassword"})
 public class ForgotPasswordServlet extends HttpServlet {
 
-    private final DatabaseService dbService = DatabaseServiceImpl.getInstance();
+    private final AccountDatabaseService dbService = AccountDatabaseServiceImpl.getInstance();
     private final RedisService redisService = RedisServiceImpl.getInstance();
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -167,7 +167,7 @@
 
         function getMessagesByConversationId(id) {
             var chatbox = $("#chatbox");
-            
+            conversationToken = id;
             $.ajax({
                 url: "messages",
                 type: "POST",

@@ -102,6 +102,16 @@
             background: black;
             color: white;
         }
+        
+        /* Hide scrollbar by default */
+        #listConversations {
+            overflow-y: hidden;
+        }
+
+        /* Show scrollbar on hover */
+        #listConversations:hover {
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -114,10 +124,10 @@
                         <div>
                             Hello, <span id="username"><%= request.getAttribute(StringConstants.ATTRIBUTE_CHAT_USER) %></span> !
                         </div>
-                        <button>New Chat</button>
+                        <button class="btn btn-success" onClick="newChat()">New Chat</button>
                     </div>
                     <div class="flex d-flex flex-col flex-1 flex-60p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
-                        <ul id="listConversations">
+                        <ul id="listConversations" style="overflow-y: auto">
                             <%
                             List<Conversation> conversations = (List) request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
                             for (int i = 0; conversations != null && i < conversations.size(); i++) {
@@ -168,6 +178,39 @@
 
     <script> 
         var conversationToken = "";
+        
+        $(document).ready(function() {
+            // Get screen height
+            var screenHeight = $(window).height();
+            
+            // Set max-height for listConversations
+            var maxListHeight = screenHeight * 0.5; // 80% of screen height
+            $('#listConversations').css('max-height', maxListHeight + 'px');
+            
+            var listConversations = $('#listConversations');
+
+            // Hide scrollbar by default
+            listConversations.css('overflow-y', 'hidden');
+
+            // Show scrollbar on hover
+            listConversations.hover(
+                function() {
+                    $(this).css('overflow-y', 'auto');
+                },
+                function() {
+                    $(this).css('overflow-y', 'hidden');
+                }
+            );
+        });
+        
+        function newChat() {
+            var chatbox = $("#chatbox");
+            conversationToken = "";
+            $("#listConversations li").removeClass("selected");
+            chatbox.empty();
+            chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
+        }
+        
         function generateUniqueToken() {
             // Generate a timestamp component
             const timestamp = new Date().getTime().toString(16);
@@ -199,7 +242,7 @@
                     chatbox.empty();
                     chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
 
-                        response.forEach(function(item) {
+                    response.forEach(function(item) {
                         chatbox.append("<p>User: " + item.message + "</p>");
                         chatbox.append("<p>Chatbot: " + item.response + "</p>");
                     });
@@ -213,12 +256,13 @@
         function sendMessage() {
             var userInput = $("#userInput").val();
             var username = $("#username").text();
-            console.log(username);
             var chatbox = $("#chatbox");
             var waitingBubble = chatbox.find(".waiting-bubble");
-            
+            var listConversations = $("#listConversations");
+            var isNewConversation = false;
             if (conversationToken === "") {
                 conversationToken = generateUniqueToken();
+                isNewConversation = true;
             }
             
             chatbox.append("<p>User: " + userInput + "</p>");
@@ -243,6 +287,23 @@
                     // Hide waiting bubble
                     waitingBubble.hide();
 
+                    if (isNewConversation) {
+                        console.log("new conversation");
+                        var onClickFront = 'onClick="';
+                        var onClickFunc = "getMessagesByConversationId('"+ conversationToken +"')";  
+                        var temp = onClickFront + onClickFunc + '"';
+                        listConversations.prepend("<li " + temp + " " +
+                                "data-conversation-id=" + conversationToken + ">" +
+                                userInput + "</li>");
+                        
+                        $("#listConversations li[data-conversation-id='" + conversationToken + "']").on('click', 'li.conversation-item', function() {
+                            var conversationId = $(this).data('conversation-id');
+                            getMessagesByConversationId(conversationId);
+                        });
+                        
+                        $("#listConversations li[data-conversation-id='" + conversationToken + "']").addClass("selected");
+                    }
+
                     // Enable input and send button
                     $("#userInput, button").prop("disabled", false);
 
@@ -265,8 +326,6 @@
             // For simplicity, this example doesn't include the server-side logic.
             // You need to implement the logic in the ChatbotServlet class.
             }
-            
-        conversationToken = generateUniqueToken();
         
     </script>
     

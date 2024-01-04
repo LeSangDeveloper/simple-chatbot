@@ -97,6 +97,11 @@
         .flex-d-col {
             flex-direction: column;
         }
+        
+        .selected {
+            background: black;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -114,11 +119,14 @@
                     <div class="flex d-flex flex-col flex-1 flex-60p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
                         <ul id="listConversations">
                             <%
-                                List<Conversation> conversations=(List)request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
-                                for(int i=0; conversations!=null && i<conversations.size() ;i++){
-                                    Conversation conservation=conversations.get(i);
+                            List<Conversation> conversations = (List) request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
+                            for (int i = 0; conversations != null && i < conversations.size(); i++) {
+                                Conversation conservation = conversations.get(i);
                             %>
-                            <li onclick="getMessagesByConversationId('<%=conservation.getId()%>')"><%=conservation.getName()%></li>
+                                <li onclick="getMessagesByConversationId('<%=conservation.getId()%>')"
+                                data-conversation-id="<%=conservation.getId()%>">
+                                <%=conservation.getName()%>
+                                </li>
                             <%
                                 }
                             %>
@@ -176,6 +184,13 @@
         function getMessagesByConversationId(id) {
             var chatbox = $("#chatbox");
             conversationToken = id;
+    
+            // Remove the "selected" class from all list items
+            $("#listConversations li").removeClass("selected");
+
+            // Add the "selected" class to the clicked list item
+            $("#listConversations li[data-conversation-id='" + id + "']").addClass("selected");
+
             $.ajax({
                 url: "messages",
                 type: "POST",
@@ -183,13 +198,13 @@
                 success: function(response) {
                     chatbox.empty();
                     chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
-                    
-                    response.forEach(function(item) {
+
+                        response.forEach(function(item) {
                         chatbox.append("<p>User: " + item.message + "</p>");
                         chatbox.append("<p>Chatbot: " + item.response + "</p>");
                     });
-               },
-               error: function() {
+                },
+                error: function() {
                     console.log("Error in AJAX request");
                 }
             });

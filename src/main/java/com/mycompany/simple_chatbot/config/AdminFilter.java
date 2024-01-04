@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -30,19 +29,25 @@ import javax.servlet.http.HttpSession;
  * @author lesan
  */
 @WebFilter(filterName="AuthFilter", 
-        urlPatterns= {"/*"})
-public class AuthFilter implements Filter {
+        urlPatterns= {"/admin/*"})
+public class AdminFilter implements Filter {
     
     private static final boolean debug = true;
+
     private static final String EXECUTING_PAGE = "executing_page";
     private final String FILTERING = "filtering"; 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
-    private FilterConfig filterConfig = null;
     private RedisService redisService = RedisServiceImpl.getInstance();
     
-    public AuthFilter() {
+    
+    // The filter configuration object we are associated with.  If
+    // this value is null, this filter instance is not currently
+    // configured. 
+    private FilterConfig filterConfig = null;
+    
+    public AdminFilter() {
     }    
 
     /**
@@ -63,23 +68,20 @@ public class AuthFilter implements Filter {
         HttpSession session=request.getSession();
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
         String tokenValue = redisService.getValueByKey(userInfo == null ? "" : userInfo.getUserToken());
-        
+    
         if ((userInfo == null || tokenValue == null) 
                 && session.getAttribute(FILTERING) == null) {
-            session.setAttribute(AuthFilter.EXECUTING_PAGE, request.getRequestURL().toString());
+            session.setAttribute(AdminFilter.EXECUTING_PAGE, request.getRequestURL().toString());
             session.setAttribute(FILTERING, "true");
             
             response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL));
         } else {
-            
             if (userInfo != null && userInfo.getUsername().equals(StringConstants.USER_ADMIN)) {
-                response.sendRedirect(URLUtils.getFullURL(URLUtils.ADMIN_URL));
-                return;
-            } 
-            
-            chain.doFilter(servletRequest, servletResponse);
+                chain.doFilter(servletRequest, servletResponse);
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            }
         }
-       
     }
 
     /**
@@ -111,7 +113,7 @@ public class AuthFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("AuthFilter:Initializing filter");
+                log("AdminFilter:Initializing filter");
             }
         }
     }
@@ -122,9 +124,9 @@ public class AuthFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AuthFilter()");
+            return ("AdminFilter()");
         }
-        StringBuffer sb = new StringBuffer("AuthFilter(");
+        StringBuffer sb = new StringBuffer("AdminFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

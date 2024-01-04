@@ -74,12 +74,15 @@ public class LoginServlet extends HttpServlet {
                 redisService.putValueByKey(token, username);
                 UserInfo info = new UserInfo(username, token);
                 request.getSession().setAttribute(StringConstants.USER_SESSION, info);
+                String url = URLUtils.getFullURL(URLUtils.CHAT_URL);
+                response.sendRedirect(url);
             } else {
-            // TODO make failed login flow
+                // TODO make failed login flow
+                String url = URLUtils.getFullURL(URLUtils.LOGIN_URL);
+                response.sendRedirect(url);
             }
         }
-        String url = URLUtils.getFullURL(URLUtils.CHAT_URL);
-        response.sendRedirect(url);
+        
     }
 
     /**

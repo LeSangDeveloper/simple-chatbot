@@ -13,9 +13,11 @@ public class URLUtils {
     public static String BASE_URL = "/simple_chatbot";
     public static String BASE_HOME = "/simple_chatbot/";
     public static String LOGIN_URL = "/login";
+    public static String LOGOUT_URL = "/logout";
     public static String CHAT_URL = "/chat";
     public static String SIGNUP_URL = "/signup";
-    public static String FORGOT_PASSWORD_URL = "";
+    public static String ADMIN_URL = "/admin";
+    public static String UPDATE_PASSWORD_URL = "update-password";
     
     public static String getFullURL(String url) {
         return BASE_URL + url;

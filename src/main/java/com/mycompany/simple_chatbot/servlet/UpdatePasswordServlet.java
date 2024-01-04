@@ -8,6 +8,11 @@ import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.TokenUtils;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
+import com.mycompany.simple_chatbot.model.UserInfo;
+import com.mycompany.simple_chatbot.service.AccountDatabaseService;
+import com.mycompany.simple_chatbot.service.RedisService;
+import com.mycompany.simple_chatbot.service.impl.AccountDatabaseServiceImpl;
+import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,21 +21,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mycompany.simple_chatbot.service.RedisService;
-import com.mycompany.simple_chatbot.service.impl.AccountDatabaseServiceImpl;
-import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
-import com.mycompany.simple_chatbot.service.AccountDatabaseService;
 /**
  *
  * @author lesan
  */
-@WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/forgotPassword"})
-public class ForgotPasswordServlet extends HttpServlet {
+@WebServlet(name = "UpdatePasswordServlet", urlPatterns = {"/update-password"})
+public class UpdatePasswordServlet extends HttpServlet {
 
-    private final AccountDatabaseService dbService = AccountDatabaseServiceImpl.getInstance();
+    private final AccountDatabaseService accDbService = AccountDatabaseServiceImpl.getInstance();
     private final RedisService redisService = RedisServiceImpl.getInstance();
     
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -42,7 +42,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(StringConstants.FORGOT_PASSWORD_PAGE).forward(request, response);
+        request.getRequestDispatcher(StringConstants.UPDATE_PASSWORD_PAGE).forward(request, response);
     }
 
     /**
@@ -56,15 +56,26 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter(StringConstants.USERNAME_PARAM);
+        String oldPassword = request.getParameter(StringConstants.OLD_PASSWORD);
+        String newPassword = request.getParameter(StringConstants.NEW_PASSWORD);
+        UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
+
         
-        Account acc = dbService.getUser(username);
-        
-        if (acc != null) {
-            String email = acc.getEmail();
-            String token = TokenUtils.generateToken();
+        if (oldPassword != null && newPassword != null && !oldPassword.isEmpty() && !newPassword.isEmpty()) { 
+            Account account = new Account.Builder()
+                    .id(userInfo.getUsername())
+                    .password(oldPassword)
+                    .build();
             
-            redisService.putValueByKetWithTimeInSec(token, acc.getId(), 180L);
+            // Validate old password
+            if (accDbService.validateUser(account)) {
+                accDbService.updatePassword(userInfo.getUsername(), newPassword);
+                String url = URLUtils.getFullURL(URLUtils.LOGOUT_URL);
+                response.sendRedirect(url);
+            } else {
+                String url = URLUtils.getFullURL(URLUtils.UPDATE_PASSWORD_URL);
+                response.sendRedirect(url);
+            }
         }
     }
 

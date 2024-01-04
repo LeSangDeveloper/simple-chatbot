@@ -86,8 +86,8 @@
             transition: flex 0.5s; /* Optional: Add a transition for a smooth change in flex value */
         }
         
-        .flex-80p {
-            flex: 0 0 80%!important;
+        .flex-60p {
+            flex: 0 0 60%!important;
         }
         
         .d-flex {
@@ -105,10 +105,13 @@
         <div class="row">
             <div id="sidebar">
                 <div class="flex d-flex h-full w-full flex-col px-3 pb-3.5" style="flex-direction: column">
-                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 10%">
+                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 20%">
+                        <div>
+                            Hello, <span id="username"><%= request.getAttribute(StringConstants.CHAT_USER_ATTRIBUTE) %></span> !
+                        </div>
                         <button>New Chat</button>
                     </div>
-                    <div class="flex d-flex flex-col flex-1 flex-80p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
+                    <div class="flex d-flex flex-col flex-1 flex-60p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
                         <ul id="listConversations">
                             <%
                                 List<Conversation> conversations=(List)request.getAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE);
@@ -121,8 +124,13 @@
                             %>
                         </ul>
                     </div>
-                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 10%">
-                        <div id="username"><%= request.getAttribute(StringConstants.CHAT_USER_ATTRIBUTE) %></div>
+                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 20%">
+                        <!-- Logout button -->
+                        <button class="btn btn-primary mb-2">
+                            <a href="/simple_chatbot/update-password" class="text-decoration-none text-light">
+                                Update password
+                            </a>
+                    </button>
                         <!-- Logout button -->
                         <form action="logout" method="get" class="mb-3">
                             <button type="submit" class="btn btn-danger">Logout</button>
@@ -174,6 +182,7 @@
                 data: {conversationId: id },
                 success: function(response) {
                     chatbox.empty();
+                    chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
                     
                     response.forEach(function(item) {
                         chatbox.append("<p>User: " + item.message + "</p>");

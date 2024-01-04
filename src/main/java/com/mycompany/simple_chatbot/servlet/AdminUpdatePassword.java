@@ -5,14 +5,10 @@
 package com.mycompany.simple_chatbot.servlet;
 
 import com.mycompany.simple_chatbot.config.util.StringConstants;
-import com.mycompany.simple_chatbot.config.util.TokenUtils;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
-import com.mycompany.simple_chatbot.model.UserInfo;
 import com.mycompany.simple_chatbot.service.AccountDatabaseService;
-import com.mycompany.simple_chatbot.service.RedisService;
 import com.mycompany.simple_chatbot.service.impl.AccountDatabaseServiceImpl;
-import com.mycompany.simple_chatbot.service.impl.RedisServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -25,11 +21,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lesan
  */
-@WebServlet(name = "UpdatePasswordServlet", urlPatterns = {"/update-password"})
-public class UpdatePasswordServlet extends HttpServlet {
+@WebServlet(name = "AdminUpdatePassword", urlPatterns = {"/admin/update-password"})
+public class AdminUpdatePassword extends HttpServlet {
 
     private final AccountDatabaseService accDbService = AccountDatabaseServiceImpl.getInstance();
-    private final RedisService redisService = RedisServiceImpl.getInstance();
+
     
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -42,7 +38,9 @@ public class UpdatePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(StringConstants.UPDATE_PASSWORD_PAGE).forward(request, response);
+        String username = request.getParameter(StringConstants.USERNAME_PARAM);
+        request.setAttribute(StringConstants.USERNAME_PARAM, username);
+        request.getRequestDispatcher(StringConstants.ADMIN_UPDATE_PASSWORD_PAGE).forward(request, response);
     }
 
     /**
@@ -56,25 +54,13 @@ public class UpdatePasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String oldPassword = request.getParameter(StringConstants.OLD_PASSWORD_PARAM);
+        String username = request.getParameter(StringConstants.USERNAME_PARAM);
         String newPassword = request.getParameter(StringConstants.NEW_PASSWORD_PARAM);
-        UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
         
-        if (oldPassword != null && newPassword != null && !oldPassword.isEmpty() && !newPassword.isEmpty()) { 
-            Account account = new Account.Builder()
-                    .id(userInfo.getUsername())
-                    .password(oldPassword)
-                    .build();
-            
-            // Validate old password
-            if (accDbService.validateUser(account)) {
-                accDbService.updatePassword(userInfo.getUsername(), newPassword);
-                String url = URLUtils.getFullURL(URLUtils.LOGOUT_URL);
-                response.sendRedirect(url);
-            } else {
-                String url = URLUtils.getFullURL(URLUtils.UPDATE_PASSWORD_URL);
-                response.sendRedirect(url);
-            }
+        if (username != null && newPassword != null && !username.isEmpty() && !newPassword.isEmpty()) { 
+            accDbService.updatePassword(username, newPassword);
+            String url = URLUtils.getFullURL(URLUtils.ADMIN_URL);
+            response.sendRedirect(url);
         }
     }
 

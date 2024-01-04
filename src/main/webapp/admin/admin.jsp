@@ -30,7 +30,6 @@
     </head>
     <body>
         <!-- Include Header -->
-        <!-- header.jsp -->
         <nav class="navbar navbar-expand-lg navbar-light py-16" style="padding-top: 1.375rem; padding-bottom: 1.375rem;background: #e5cb5e; color: #5860c3;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/simple_chatbot/admin" style="color: #5860c3;">
@@ -59,40 +58,58 @@
                 <h2 style="color: #511b11">ADMIN PAGE</h2>
             </div>
             <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Surname</th>
-                <th>Middle Name</th>
-                <th>First Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Iterate through the list of accounts -->
-            <%
-                List<Account> accounts=(List)request.getAttribute(StringConstants.ATTRIBUTE_ACCOUNTS_LIST);
-                for(int i=0; accounts!=null && i<accounts.size() ;i++){
-                    Account account=accounts.get(i);
-                    %>
-                        <tr>
-                            <td><%=account.getId()%></td>
-                            <td><%=account.getSurname()%></td>
-                            <td><%=account.getMiddleName()%></td>
-                            <td><%=account.getFirstName()%></td>
-                            <td><%=account.getEmail()%></td>
-                            <td><%=account.getPhone()%></td>
-                        </tr>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Surname</th>
+                        <th>Middle Name</th>
+                        <th>First Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterate through the list of accounts -->
                     <%
-                }
-            %>
-        </tbody>
-    </table>
+                    List<Account> accounts=(List)request.getAttribute(StringConstants.ATTRIBUTE_ACCOUNTS_LIST);
+                    for(int i=0; accounts!=null && i<accounts.size() ;i++){
+                        Account account=accounts.get(i);
+                        %>
+                            <tr>
+                                <td><%=account.getId()%></td>
+                                <td><%=account.getSurname()%></td>
+                                <td><%=account.getMiddleName()%></td>
+                                <td><%=account.getFirstName()%></td>
+                                <td><%=account.getEmail()%></td>
+                                <td><%=account.getPhone()%></td>
+                                <td>
+                                    <button class="btn btn-primary">
+                                        <a href="/simple_chatbot/admin/update-password?username=<%=account.getId()%>" class="text-decoration-none text-light">
+                                            Update Password
+                                        </a>
+                                    </button>
+                                </td>
+                            </tr>
+                        <%
+                    }
+                    %>
+                </tbody>
+            </table>
         </div>
         
         <!-- Include Footer -->
         <%@ include file="../parts/footer.jsp" %>
+        
+        <!-- Bootstrap JS (Optional: Only if you are using Bootstrap JavaScript features) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+        <script> 
+            function updatePassword(id) {
+                
+            }
+        </script> 
         
     </body>
 </html>

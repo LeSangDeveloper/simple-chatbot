@@ -12,8 +12,8 @@ public class StringConstants {
     public static String USER_SESSION = "userInfo";
     public static String USER_ADMIN = "admin";
     
-    public static String OLD_PASSWORD = "oldPassword";
-    public static String NEW_PASSWORD = "newPassword";
+    public static String OLD_PASSWORD_PARAM = "oldPassword";
+    public static String NEW_PASSWORD_PARAM = "newPassword";
     public static String USERNAME_PARAM = "username";
     public static String PASSWORD_PARAM = "password";
     public static String SURNAME_PARAM = "surname";
@@ -27,6 +27,7 @@ public class StringConstants {
     public static String SIGNUP_PAGE = "signup.jsp";
     public static String CHAT_PAGE = "chat.jsp";
     public static String UPDATE_PASSWORD_PAGE = "update_password.jsp";
+    public static String ADMIN_UPDATE_PASSWORD_PAGE = "/admin/update_password.jsp";
     public static String ADMIN_PAGE = "/admin/admin.jsp";
     
     public static String ATTRIBUTE_CHAT_MESSAGES = "chatMessages";

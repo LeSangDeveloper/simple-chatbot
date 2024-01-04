@@ -37,13 +37,13 @@
             </div>
             <form action="/simple_chatbot/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
                 <div class="mb-3">
-                    <label for="<%= StringConstants.OLD_PASSWORD %>" class="form-label">New Password</label>
-                    <input type="password" class="form-control" name="<%= StringConstants.OLD_PASSWORD %>" required>
+                    <label for="<%= StringConstants.OLD_PASSWORD_PARAM %>" class="form-label">New Password</label>
+                    <input type="password" class="form-control" name="<%= StringConstants.OLD_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your old password.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="<%= StringConstants.NEW_PASSWORD %>" class="form-label">Old Password:</label>
-                    <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD %>" required>
+                    <label for="<%= StringConstants.NEW_PASSWORD_PARAM %>" class="form-label">Old Password:</label>
+                    <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your new password.</div>
                 </div>
                 <button class="btn text-light" style="background: #5860c3;" type="submit">Confirm</button>

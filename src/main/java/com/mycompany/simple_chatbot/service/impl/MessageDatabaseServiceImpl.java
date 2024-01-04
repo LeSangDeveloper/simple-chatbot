@@ -48,11 +48,11 @@ public class MessageDatabaseServiceImpl implements MessageDatabaseService {
                     while (resultSet.next()) {
                         // Create a Conversation object for each row
                         ChatMessage message = new ChatMessage.Builder()
-                                .createdDate(resultSet.getTimestamp("created_date"))
-                                .username(resultSet.getString("user_id"))
-                                .conversationId(resultSet.getString("conversation_id"))
-                                .message(resultSet.getString("message"))
-                                .response(resultSet.getString("response"))
+                                .createdDate(resultSet.getTimestamp(DatabaseColumnConstants.COLUMN_CREATED_DATE))
+                                .username(resultSet.getString(DatabaseColumnConstants.COLUMN_USER_ID))
+                                .conversationId(resultSet.getString(DatabaseColumnConstants.COLUMN_CONVERSATION_ID))
+                                .message(resultSet.getString(DatabaseColumnConstants.COLUMN_MESSAGE))
+                                .response(resultSet.getString(DatabaseColumnConstants.COLUMN_RESPONSE))
                                 .build();
 
                         // Add the Conversation object to the list

@@ -6,7 +6,6 @@ package com.mycompany.simple_chatbot.servlet;
 
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +32,8 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.invalidate(); // Invalidate the session
-        response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL)); // Redirect to the login page
+        session.invalidate();
+        response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL));
     }
 
     @Override

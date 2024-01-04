@@ -99,8 +99,8 @@ public class ChatServlet extends HttpServlet {
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
         String username = redisService.getValueByKey(userInfo.getUserToken());
         List<Conversation> cons = conversationService.getConversationsByUserId(username);
-        request.setAttribute(StringConstants.CHAT_USER_ATTRIBUTE, username);
-        request.setAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE, cons);
+        request.setAttribute(StringConstants.ATTRIBUTE_CHAT_USER, username);
+        request.setAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS, cons);
         
         request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
     }

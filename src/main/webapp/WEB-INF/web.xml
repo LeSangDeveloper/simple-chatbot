@@ -4,14 +4,6 @@
         <filter-name>AuthFilter</filter-name>
         <filter-class>com.mycompany.simple_chatbot.config.AuthFilter</filter-class>
     </filter>
-    <filter>
-        <filter-name>AdminFilter</filter-name>
-        <filter-class>com.mycompany.simple_chatbot.config.AdminFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AdminFilter</filter-name>
-        <url-pattern>/admin/*</url-pattern>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/*</url-pattern>

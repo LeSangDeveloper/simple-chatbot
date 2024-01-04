@@ -8,6 +8,7 @@ import com.mycompany.simple_chatbot.config.DatabaseConnectionManager;
 import com.mycompany.simple_chatbot.config.util.DatabaseColumnConstants;
 import com.mycompany.simple_chatbot.config.util.PasswordUtils;
 import com.mycompany.simple_chatbot.model.Account;
+import com.mycompany.simple_chatbot.model.ChatMessage;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,9 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.mycompany.simple_chatbot.service.AccountDatabaseService;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -138,6 +142,41 @@ public class AccountDatabaseServiceImpl implements AccountDatabaseService {
         }
             
         return correct;
+    }
+
+    @Override
+    public List<Account> fetchAllUsers() {
+        List<Account> accounts = new ArrayList<>();
+
+        try {
+            String selectSql = "SELECT * FROM " + DatabaseColumnConstants.TABLE_ACCOUNT ;
+
+            try (PreparedStatement preparedStatement = DatabaseConnectionManager.getConnection().prepareStatement(selectSql)) {
+
+                // Execute the SQL statement and get the result set
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        // Create a Conversation object for each row
+                        Account account = new Account.Builder()
+                                .id(resultSet.getString(DatabaseColumnConstants.COLUMN_ID))
+                                .firstName(resultSet.getString(DatabaseColumnConstants.COLUMN_FIRST_NAME))
+                                .middleName(resultSet.getString(DatabaseColumnConstants.COLUMN_MIDDLE_NAME))
+                                .surname(resultSet.getString(DatabaseColumnConstants.COLUMN_SURNAME))
+                                .phone(resultSet.getString(DatabaseColumnConstants.COLUMN_PHONE))
+                                .email(resultSet.getString(DatabaseColumnConstants.COLUMN_EMAIL))
+                                .build();
+
+                        // Add the Conversation object to the list
+                        accounts.add(account);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle any exceptions appropriately
+        }
+
+        return accounts;
     }
     
 }

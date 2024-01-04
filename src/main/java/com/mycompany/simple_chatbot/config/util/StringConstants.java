@@ -27,8 +27,10 @@ public class StringConstants {
     public static String SIGNUP_PAGE = "signup.jsp";
     public static String CHAT_PAGE = "chat.jsp";
     public static String UPDATE_PASSWORD_PAGE = "update_password.jsp";
+    public static String ADMIN_PAGE = "/admin/admin.jsp";
     
-    public static String CHAT_MESSAGES_ATTRIBUTE = "chatMessages";
-    public static String CONVERSATIONS_ATTRIBUTE = "conservations";
-    public static String CHAT_USER_ATTRIBUTE = "username";
+    public static String ATTRIBUTE_CHAT_MESSAGES = "chatMessages";
+    public static String ATTRIBUTE_CONVERSATIONS = "conservations";
+    public static String ATTRIBUTE_CHAT_USER = "username";
+    public static String ATTRIBUTE_ACCOUNTS_LIST = "accountList";
 }

@@ -5,6 +5,7 @@
 package com.mycompany.simple_chatbot.service;
 
 import com.mycompany.simple_chatbot.model.Account;
+import java.util.List;
 
 /**
  *
@@ -16,5 +17,6 @@ public interface AccountDatabaseService {
     void addUser(Account user);
     Account getUser(String username);
     Boolean validateUser(Account user);
+    List<Account> fetchAllUsers();
     
 }

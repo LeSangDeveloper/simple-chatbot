@@ -30,7 +30,8 @@ import javax.servlet.http.HttpSession;
  * @author lesan
  */
 @WebFilter(filterName="AuthFilter", 
-        urlPatterns= {"/*"})
+        urlPatterns= {"/*"},
+        dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class AuthFilter implements Filter {
     
     private static final boolean debug = true;
@@ -59,25 +60,37 @@ public class AuthFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
-
+        String requestURI = ((HttpServletRequest) request).getRequestURI();
+        
         HttpSession session=request.getSession();
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
         String tokenValue = redisService.getValueByKey(userInfo == null ? "" : userInfo.getUserToken());
-        
+            
+        // Perform your authentication logic for non-excluded URLs
         if ((userInfo == null || tokenValue == null) 
-                && session.getAttribute(FILTERING) == null) {
+            && session.getAttribute(FILTERING) == null) {
+            // If authentication succeeds, continue with the next filter or servlet in the chain
             session.setAttribute(AuthFilter.EXECUTING_PAGE, request.getRequestURL().toString());
             session.setAttribute(FILTERING, "true");
             
             response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL));
-        } else {
-            
-            if (userInfo != null && userInfo.getUsername().equals(StringConstants.USER_ADMIN)) {
-                response.sendRedirect(URLUtils.getFullURL(URLUtils.ADMIN_URL));
-                return;
-            } 
-            
-            chain.doFilter(servletRequest, servletResponse);
+        } else 
+        {
+            // Exclude URLs with the pattern /admin/*
+            if (requestURI.contains("/admin") || 
+                    (userInfo != null && userInfo.getUsername().equals(StringConstants.USER_ADMIN))) {
+                // If the URL matches the exclusion pattern, allow the request to proceed
+                if (userInfo != null && userInfo.getUsername().equals(StringConstants.USER_ADMIN)) {
+                    if (requestURI.contains("/admin") || requestURI.contains("/logout")) {
+                        chain.doFilter(servletRequest, servletResponse);
+                    }
+                    else response.sendRedirect(URLUtils.getFullURL(URLUtils.ADMIN_URL));
+                } else {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                }
+            } else {
+                chain.doFilter(servletRequest, servletResponse);
+            }
         }
        
     }

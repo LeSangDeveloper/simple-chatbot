@@ -78,10 +78,10 @@ public class ConversationDatabaseServiceImpl implements ConversationDatabaseServ
                     while (resultSet.next()) {
                         // Create a Conversation object for each row
                         Conversation conversation = new Conversation.Builder()
-                                .createdDate(resultSet.getTimestamp("created_date"))
-                                .id(resultSet.getString("id"))
-                                .name(resultSet.getString("name"))
-                                .username(resultSet.getString("user_id"))
+                                .createdDate(resultSet.getTimestamp(DatabaseColumnConstants.COLUMN_CREATED_DATE))
+                                .id(resultSet.getString(DatabaseColumnConstants.COLUMN_ID))
+                                .name(resultSet.getString(DatabaseColumnConstants.COLUMN_NAME))
+                                .username(resultSet.getString(DatabaseColumnConstants.COLUMN_USER_ID))
                                 .build();
 
                         // Add the Conversation object to the list

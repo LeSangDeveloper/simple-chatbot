@@ -107,14 +107,14 @@
                 <div class="flex d-flex h-full w-full flex-col px-3 pb-3.5" style="flex-direction: column">
                     <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 20%">
                         <div>
-                            Hello, <span id="username"><%= request.getAttribute(StringConstants.CHAT_USER_ATTRIBUTE) %></span> !
+                            Hello, <span id="username"><%= request.getAttribute(StringConstants.ATTRIBUTE_CHAT_USER) %></span> !
                         </div>
                         <button>New Chat</button>
                     </div>
                     <div class="flex d-flex flex-col flex-1 flex-60p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
                         <ul id="listConversations">
                             <%
-                                List<Conversation> conversations=(List)request.getAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE);
+                                List<Conversation> conversations=(List)request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
                                 for(int i=0; conversations!=null && i<conversations.size() ;i++){
                                     Conversation conservation=conversations.get(i);
                             %>
@@ -130,7 +130,7 @@
                             <a href="/simple_chatbot/update-password" class="text-decoration-none text-light">
                                 Update password
                             </a>
-                    </button>
+                        </button>
                         <!-- Logout button -->
                         <form action="logout" method="get" class="mb-3">
                             <button type="submit" class="btn btn-danger">Logout</button>

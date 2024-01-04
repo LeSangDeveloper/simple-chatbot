@@ -21,8 +21,6 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
 public class LogoutServlet extends HttpServlet {
 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -36,7 +34,7 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.invalidate(); // Invalidate the session
-        response.sendRedirect(URLUtils.getFullURL(URLUtils.BASE_HOME)); // Redirect to the login page
+        response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL)); // Redirect to the login page
     }
 
     @Override

@@ -15,16 +15,7 @@ import java.util.logging.Logger;
  * @author lesan
  */
 public class DatabaseConnectionManager {
-    private static ConfigManager config = ConfigManager.getInstance();
-    
-    static{
-        try {
-            //加入 Class.forName
-            Class.forName(config.getDbDriver());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DatabaseConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    private static final ConfigManager config = ConfigManager.getInstance();
     
     public static Connection getConnection() throws SQLException {
         String username = config.getDbUsername();

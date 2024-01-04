@@ -97,18 +97,10 @@ public class ChatServlet extends HttpServlet {
             throws ServletException, IOException {
         
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(StringConstants.USER_SESSION);
-        if (userInfo == null || redisService.getValueByKey(userInfo.getUserToken()) == null) {
-            response.sendRedirect(URLUtils.getFullURL(URLUtils.LOGIN_URL));
-        } else 
-        {
-            String username = redisService.getValueByKey(userInfo.getUserToken());
-            List<Conversation> cons = conversationService.getConversationsByUserId(username);
-            request.setAttribute(StringConstants.CHAT_USER_ATTRIBUTE, username);
-            request.setAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE, cons);
-        }
-        
-//        request.setAttribute(StringConstants.CHAT_MESSAGES_ATTRIBUTE, chatMessages);
-//        request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
+        String username = redisService.getValueByKey(userInfo.getUserToken());
+        List<Conversation> cons = conversationService.getConversationsByUserId(username);
+        request.setAttribute(StringConstants.CHAT_USER_ATTRIBUTE, username);
+        request.setAttribute(StringConstants.CONVERSATIONS_ATTRIBUTE, cons);
         
         request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
     }

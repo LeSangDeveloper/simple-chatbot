@@ -38,6 +38,9 @@
             border: 1px solid #dee2e6;
             padding: 10px;
             position: relative;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 10px;
         }
 
         .waiting-bubble {
@@ -46,7 +49,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             padding: 10px;
-            background-color: #d6d8db;
+            background-color: #f8f9fa;
             border-radius: 8px;
             display: none;
         }
@@ -116,18 +119,18 @@
 </head>
 <body>
     
-    <div class="w-100 container-fluid">
-        <div class="row">
-            <div id="sidebar">
-                <div class="flex d-flex h-full w-full flex-col px-3 pb-3.5" style="flex-direction: column">
-                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 20%">
-                        <div>
-                            Hello, <span id="username"><%= request.getAttribute(StringConstants.ATTRIBUTE_CHAT_USER) %></span> !
-                        </div>
-                        <button class="btn btn-success" onClick="newChat()">New Chat</button>
-                    </div>
-                    <div class="flex d-flex flex-col flex-1 flex-60p transition-opacity duration-500 -mr-2 pr-2 overflow-y-auto">
-                        <ul id="listConversations" style="overflow-y: auto">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar -->
+            <div id="sidebar" class="col-md-4 col-lg-3 d-flex flex-column border-end">
+                <!-- User greeting -->
+                <div class="p-3 border-bottom">
+                    <h5>Hello, <span id="username"><%= request.getAttribute(StringConstants.ATTRIBUTE_CHAT_USER) %></span>!</h5>
+                    <button class="btn btn-success mt-2" onclick="newChat()">New Chat</button>
+                </div>
+                <!-- Conversations list -->
+                <ul id="listConversations" class="list-group list-group-flush">
+                    
                             <%
                             List<Conversation> conversations = (List) request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
                             for (int i = 0; conversations != null && i < conversations.size(); i++) {
@@ -140,35 +143,30 @@
                             <%
                                 }
                             %>
-                        </ul>
-                    </div>
-                    <div class="flex flex-col pt-2 empty:hidden dark:border-white/20" style="flex: 0 0 20%">
-                        <!-- Logout button -->
-                        <button class="btn btn-primary mb-2">
-                            <a href="/simple_chatbot/update-password" class="text-decoration-none text-light">
-                                Update password
-                            </a>
-                        </button>
-                        <!-- Logout button -->
-                        <form action="logout" method="get" class="mb-3">
-                            <button type="submit" class="btn btn-danger">Logout</button>
-                        </form>
-                    </div>
+                    
+                </ul>
+                <!-- Bottom section -->
+                <div class="mt-auto p-3">
+                    <a href="/simple_chatbot/update-password" class="btn btn-primary w-100 text-decoration-none text-light mb-2">
+                        Update password
+                    </a>
+                    <form action="logout" method="get">
+                        <button type="submit" class="btn btn-danger w-100">Logout</button>
+                    </form>
                 </div>
             </div>
-
-            <div id="content">
-        <h1>Chatbot</h1>
-        <div id="chatbox" class="border mb-3">
-            <div class="waiting-bubble">Waiting for response...</div>
-        </div>
-        <div id="userInputContainer" class="border-top">
-            <input type="text" id="userInput" class="form-control" placeholder="Type your message...">
-            <button class="btn btn-primary" onclick="sendMessage()">Send</button>
-        </div>
-        
-    </div>
             
+            <!-- Chat content -->
+            <div id="content" class="col-md-8 col-lg-9 d-flex flex-column">
+                <div id="chatbox" class="flex-grow-1 bg-white overflow-auto p-3">
+                    <div class="waiting-bubble">Waiting for response...</div>
+                    <!-- Messages will be loaded here -->
+                </div>
+                <div id="userInputContainer" class="input-group p-3">
+                    <input type="text" id="userInput" class="form-control" placeholder="Type your message...">
+                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
         </div>
     </div>
     

@@ -57,7 +57,6 @@ public class ChatServlet extends HttpServlet {
         
         if (username != null && message != null && !username.isEmpty() && !message.isEmpty()) {
             chatbotResponse = chatbot.sendMessage(message);
-            chatbotResponse = chatbotResponse.replaceAll(message, "");
             chatbotResponse = chatbotResponse.replaceAll("\n", "");
             
             ChatMessage chatMessage = new ChatMessage.Builder()
@@ -81,7 +80,7 @@ public class ChatServlet extends HttpServlet {
             messageService.insertMessage(chatMessage);
         }
 
-        response.getWriter().write(chatbotResponse.replaceAll(message, ""));
+        response.getWriter().write(chatbotResponse);
     }
     
     /**

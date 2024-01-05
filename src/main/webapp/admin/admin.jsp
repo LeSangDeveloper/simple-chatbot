@@ -10,106 +10,103 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<!--        <link href="http://localhost:3000/css/bootstrap.min.css" rel="stylesheet">-->
-        <style>
-            body {
-                margin: 0;
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh; /* Ensure the body takes up at least the full height of the viewport */
-            }
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-            .container-fluid {
-                flex: 1;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- Include Header -->
-        <nav class="navbar navbar-expand-lg navbar-light py-16" style="padding-top: 1.375rem; padding-bottom: 1.375rem;background: #e5cb5e; color: #5860c3;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/simple_chatbot/admin" style="color: #5860c3;">
-                    <span>Hello, Chatbot Admin</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <button class="btn btn-danger">
-                                <a href="/simple_chatbot/logout" class="text-decoration-none text-light">
-                                    Logout
-                                </a>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+        .container-fluid {
+            flex: 1;
+        }
+
+        .btn-pink {
+            background: #c1177c;
+        }
+        
+        .btn-pink:hover {
+            background: #a50064;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light py-4" style="background: #c1177c">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/simple_chatbot/">Hello, Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-danger" href="/simple_chatbot/logout" role="button">Logout</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    
-        <!-- Body -->
-        <div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
-            <div class="text-center mb-3">
-                <h2 style="color: #511b11">ADMIN PAGE</h2>
-            </div>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Surname</th>
-                        <th>Middle Name</th>
-                        <th>First Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iterate through the list of accounts -->
-                    <%
-                    List<Account> accounts=(List)request.getAttribute(StringConstants.ATTRIBUTE_ACCOUNTS_LIST);
-                    for(int i=0; accounts!=null && i<accounts.size() ;i++){
-                        Account account=accounts.get(i);
-                        %>
-                            <tr>
-                                <td><%=account.getId()%></td>
-                                <td><%=account.getSurname()%></td>
-                                <td><%=account.getMiddleName()%></td>
-                                <td><%=account.getFirstName()%></td>
-                                <td><%=account.getEmail()%></td>
-                                <td><%=account.getPhone()%></td>
-                                <td>
-                                    <button class="btn btn-primary">
-                                        <a href="/simple_chatbot/admin/update-password?username=<%=account.getId()%>" class="text-decoration-none text-light">
-                                            Update Password
-                                        </a>
-                                    </button>
-                                </td>
-                            </tr>
-                        <%
-                    }
-                    %>
-                </tbody>
-            </table>
         </div>
-        
-        <!-- Include Footer -->
-        <%@ include file="../parts/footer.jsp" %>
-        
-        <!-- Bootstrap JS (Optional: Only if you are using Bootstrap JavaScript features) -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    
-        <script> 
-            function updatePassword(id) {
+    </nav>
+
+    <!-- Body -->
+    <div class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-80">
+        <div class="text-center my-4">
+            <h2 style="color: #c1177c">ADMIN PAGE</h2>
+        </div>
+        <table class="table table-bordered table-hover my-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Surname</th>
+                    <th>Middle Name</th>
+                    <th>First Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate through the list of accounts -->
+                <%
+                List<Account> accounts = (List) request.getAttribute(StringConstants.ATTRIBUTE_ACCOUNTS_LIST);
+                for (int i = 0; accounts != null && i < accounts.size(); i++) {
+                    Account account = accounts.get(i);
+                %>
+                <tr>
+                    <td><%=account.getId()%></td>
+                    <td><%=account.getSurname()%></td>
+                    <td><%=account.getMiddleName()%></td>
+                    <td><%=account.getFirstName()%></td>
+                    <td><%=account.getEmail()%></td>
+                    <td><%=account.getPhone()%></td>
+                    <td>
+                        <a href="/simple_chatbot/admin/update-password?username=<%=account.getId()%>" class="btn btn-pink btn-sm text-light" >Update Password</a>
+                    </td>
+                </tr>
+                <%
+                }
+                %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include Footer -->
+    <%@ include file="../parts/footer.jsp" %>
+
+    <!-- Bootstrap JS (Optional: Only if you are using Bootstrap JavaScript features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Add any custom scripts here -->
+    <script> 
+        function updatePassword(id) {
                 
-            }
-        </script> 
-        
-    </body>
+        }
+    </script> 
+</body>
 </html>

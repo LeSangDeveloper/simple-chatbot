@@ -24,6 +24,14 @@
             .container-fluid {
                 flex: 1;
             }
+            
+            .btn-pink {
+                background: #c1177c;
+            }   
+        
+            .btn-pink:hover {
+                background: #a50064;
+            }
         </style>
     </head>
     <body>
@@ -33,7 +41,7 @@
         <!-- Body -->
         <div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
             <div class="text-center mb-3">
-                <h2 style="color: #511b11">Update Password</h2>
+                <h2>Update Password</h2>
             </div>
             <form action="/simple_chatbot/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
                 <div class="mb-3">
@@ -46,7 +54,9 @@
                     <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your new password.</div>
                 </div>
-                <button class="btn text-light" style="background: #5860c3;" type="submit">Confirm</button>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-pink text-light" type="submit">Confirm</button>
+                </div>  
             </form>
         </div>
 

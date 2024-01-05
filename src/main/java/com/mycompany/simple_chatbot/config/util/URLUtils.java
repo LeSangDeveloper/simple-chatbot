@@ -17,7 +17,7 @@ public class URLUtils {
     public static String CHAT_URL = "/chat";
     public static String SIGNUP_URL = "/signup";
     public static String ADMIN_URL = "/admin";
-    public static String UPDATE_PASSWORD_URL = "update-password";
+    public static String UPDATE_PASSWORD_URL = "/update-password";
     
     public static String getFullURL(String url) {
         return BASE_URL + url;

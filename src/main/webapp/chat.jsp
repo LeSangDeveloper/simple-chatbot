@@ -66,14 +66,6 @@
             margin-right: 10px;
         }
         
-/*        #sidebar {
-            flex: 0 0 20%;
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-right: 1px solid #dee2e6;
-            height: 100vh;
-        }*/
-        
         #sidebar {
             flex: 0 0 20%;
             background-color: #f8f9fa;
@@ -102,8 +94,8 @@
         }
         
         .selected {
-            background: black;
             color: white;
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
         /* Hide scrollbar by default */
@@ -115,41 +107,54 @@
         #listConversations:hover {
             overflow-y: auto;
         }
+        
+        .hover-pointer {
+            cursor: pointer;
+        }
+        
+        .btn-pink {
+            background: #c1177c;
+        }   
+        
+        .btn-pink:hover {
+            background: #a50064;
+        }
     </style>
 </head>
 <body>
     
     <div class="container-fluid h-100">
         <div class="row h-100">
-            <!-- Sidebar -->
-            <div id="sidebar" class="col-md-4 col-lg-3 d-flex flex-column border-end">
+            <!-- Sidebar with dark theme -->
+            <div id="sidebar" class="col-md-4 col-lg-3 d-flex flex-column border-end bg-dark text-white">
                 <!-- User greeting -->
                 <div class="p-3 border-bottom">
-                    <h5>Hello, <span id="username"><%= request.getAttribute(StringConstants.ATTRIBUTE_CHAT_USER) %></span>!</h5>
-                    <button class="btn btn-success mt-2" onclick="newChat()">New Chat</button>
+                    <h5>Hello, <span id="username" class="text-white"><%= request.getAttribute(StringConstants.ATTRIBUTE_CHAT_USER) %></span>!</h5>
+                    <button class="btn btn-light mt-2" onclick="newChat()">New Chat</button>
                 </div>
                 <!-- Conversations list -->
                 <ul id="listConversations" class="list-group list-group-flush">
-                    
-                            <%
-                            List<Conversation> conversations = (List) request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
-                            for (int i = 0; conversations != null && i < conversations.size(); i++) {
-                                Conversation conservation = conversations.get(i);
-                            %>
-                                <li onclick="getMessagesByConversationId('<%=conservation.getId()%>')"
-                                data-conversation-id="<%=conservation.getId()%>">
-                                <%=conservation.getName()%>
-                                </li>
-                            <%
-                                }
-                            %>
-                    
+                <%
+                List<Conversation> conversations = (List) request.getAttribute(StringConstants.ATTRIBUTE_CONVERSATIONS);
+                for (int i = 0; conversations != null && i < conversations.size(); i++) {
+                Conversation conservation = conversations.get(i);
+                %>
+                    <li onclick="getMessagesByConversationId('<%=conservation.getId()%>')"
+                        data-conversation-id="<%=conservation.getId()%>"
+                        class="list-group-item bg-dark text-white-50 hover-pointer">
+                        <%=conservation.getName()%>
+                    </li>
+                <%
+                }
+                %>
                 </ul>
                 <!-- Bottom section -->
                 <div class="mt-auto p-3">
-                    <a href="/simple_chatbot/update-password" class="btn btn-primary w-100 text-decoration-none text-light mb-2">
-                        Update password
-                    </a>
+                    <button class="btn btn-secondary mb-2 w-100">
+                        <a href="/simple_chatbot/update-password" class="text-decoration-none text-white">
+                            Update password
+                        </a>
+                    </button>
                     <form action="logout" method="get">
                         <button type="submit" class="btn btn-danger w-100">Logout</button>
                     </form>
@@ -164,9 +169,10 @@
                 </div>
                 <div id="userInputContainer" class="input-group p-3">
                     <input type="text" id="userInput" class="form-control" placeholder="Type your message...">
-                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    <button class="btn btn-pink text-white" onclick="sendMessage()">Send</button>
                 </div>
             </div>
+            
         </div>
     </div>
     
@@ -176,6 +182,7 @@
 
     <script> 
         var conversationToken = "";
+        var isMessageProcessing = false;
         
         $(document).ready(function() {
             // Get screen height
@@ -205,6 +212,9 @@
             var chatbox = $("#chatbox");
             conversationToken = "";
             $("#listConversations li").removeClass("selected");
+            $("#listConversations li").addClass("bg-dark");
+            $("#listConversations li").addClass("text-white-50");
+            
             chatbox.empty();
             chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
         }
@@ -223,32 +233,38 @@
         }
 
         function getMessagesByConversationId(id) {
-            var chatbox = $("#chatbox");
-            conversationToken = id;
+            if (!isMessageProcessing) {
+                var chatbox = $("#chatbox");
+                conversationToken = id;
     
-            // Remove the "selected" class from all list items
-            $("#listConversations li").removeClass("selected");
+                // Remove the "selected" class from all list items
+                $("#listConversations li").removeClass("selected");
+                $("#listConversations li").addClass("bg-dark");
+                $("#listConversations li").addClass("text-white-50");
 
-            // Add the "selected" class to the clicked list item
-            $("#listConversations li[data-conversation-id='" + id + "']").addClass("selected");
+                // Add the "selected" class to the clicked list item
+                $("#listConversations li[data-conversation-id='" + id + "']").addClass("selected");
+                $("#listConversations li[data-conversation-id='" + id + "']").removeClass("bg-dark");
+                $("#listConversations li[data-conversation-id='" + conversationToken + "']").removeClass("text-white-50");
+            
+                $.ajax({
+                    url: "messages",
+                    type: "POST",
+                    data: {conversationId: id },
+                    success: function(response) {
+                        chatbox.empty();
+                        chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
 
-            $.ajax({
-                url: "messages",
-                type: "POST",
-                data: {conversationId: id },
-                success: function(response) {
-                    chatbox.empty();
-                    chatbox.append("<div class='waiting-bubble'>Waiting for response...</div>");
-
-                    response.forEach(function(item) {
-                        chatbox.append("<p>User: " + item.message + "</p>");
-                        chatbox.append("<p>Chatbot: " + item.response + "</p>");
-                    });
-                },
-                error: function() {
-                    console.log("Error in AJAX request");
-                }
-            });
+                        response.forEach(function(item) {
+                            chatbox.append("<p>User: " + item.message + "</p>");
+                            chatbox.append("<p>Chatbot: " + item.response + "</p>");
+                        });
+                    },
+                    error: function() {
+                        console.log("Error in AJAX request");
+                    }
+                });
+            }
         }
 
         function sendMessage() {
@@ -258,6 +274,7 @@
             var waitingBubble = chatbox.find(".waiting-bubble");
             var listConversations = $("#listConversations");
             var isNewConversation = false;
+            isMessageProcessing = true;
             if (conversationToken === "") {
                 conversationToken = generateUniqueToken();
                 isNewConversation = true;
@@ -269,7 +286,7 @@
             waitingBubble.show();
 
             // Disable input and send button temporarily
-            $("#userInput, button").prop("disabled", true);
+            $("#userInput, button, a").prop("disabled", true);
 
 
             // Add server-side logic here to process the user's input
@@ -300,6 +317,10 @@
                         });
                         
                         $("#listConversations li[data-conversation-id='" + conversationToken + "']").addClass("selected");
+                        $("#listConversations li[data-conversation-id='" + conversationToken + "']").addClass("list-group-item");
+                        $("#listConversations li[data-conversation-id='" + conversationToken + "']").addClass("hover-pointer");                        
+                        $("#listConversations li[data-conversation-id='" + conversationToken + "']").removeClass("bg-dark");
+                        $("#listConversations li[data-conversation-id='" + conversationToken + "']").removeClass("text-white-50");
                     }
 
                     // Enable input and send button
@@ -312,9 +333,11 @@
                     chatbox.scrollTop(chatbox[0].scrollHeight);
                     
                     chatbox.append("<p>Chatbot: " + response + "</p>");
+                    isMessageProcessing = false;
                },
                error: function() {
                     console.log("Error in AJAX request");
+                    isMessageProcessing = false;
                 }
             });
             

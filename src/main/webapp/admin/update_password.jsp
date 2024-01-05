@@ -23,26 +23,28 @@
             .container-fluid {
                 flex: 1;
             }
+            
+            .btn-pink {
+                background: #c1177c;
+            }   
+        
+            .btn-pink:hover {
+                background: #a50064;
+            }
         </style>
     </head>
     <body>
         <!-- Include Header -->
-        <nav class="navbar navbar-expand-lg navbar-light py-16" style="padding-top: 1.375rem; padding-bottom: 1.375rem;background: #e5cb5e; color: #5860c3;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/simple_chatbot/admin" style="color: #5860c3;">
-                    <span>Hello, Chatbot Admin</span>
-                </a>
+        <nav class="navbar navbar-expand-lg navbar-light py-4" style="background: #c1177c">
+            <div class="container">
+                <a class="navbar-brand text-white" href="/simple_chatbot/">Hello, Admin</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <button class="btn btn-danger">
-                                <a href="/simple_chatbot/logout" class="text-decoration-none text-light">
-                                    Logout
-                                </a>
-                            </button>
+                            <a class="btn btn-danger" href="/simple_chatbot/logout" role="button">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -52,7 +54,7 @@
         <!-- Body -->
         <div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
             <div class="text-center mb-3">
-                <h2 style="color: #511b11">Update Password</h2>
+                <h2>Update Password</h2>
             </div>
             <form action="/simple_chatbot/admin/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
                 <div class="mb-3">
@@ -67,7 +69,9 @@
                     <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your new password.</div>
                 </div>
-                <button class="btn text-light" style="background: #5860c3;" type="submit">Confirm</button>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-pink text-light" type="submit">Confirm</button>
+                </div>  
             </form>
         </div>
 

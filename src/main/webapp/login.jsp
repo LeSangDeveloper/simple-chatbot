@@ -25,6 +25,23 @@
             .container-fluid {
                 flex: 1;
             }
+            
+            
+            .btn-pink {
+                background: #c1177c;
+            }   
+        
+            .btn-pink:hover {
+                background: #a50064;
+            }
+            
+            .link-pink {
+                color: #c1177c;
+            }   
+        
+            .link-pink:hover {
+                color: #a50064;
+            }
         </style>
         <script>
             function validateForm() {
@@ -100,11 +117,11 @@
             </div>
             <% } %>
             <div class="d-flex justify-content-center">
-                <button class="btn text-light" style="background: #c1177c;" type="submit">Login</button>
+                <button class="btn btn-pink text-light" type="submit">Login</button>
             </div>  
         </form>
         <div class="mt-3">
-            Don't have an account? <a style="color: #c1177c" href="/simple_chatbot/signup">Sign Up</a>
+            Don't have an account? <a class="link-pink" href="/simple_chatbot/signup">Sign Up</a>
         </div>
     </div>
 

@@ -56,23 +56,43 @@
             </div>
             <div class="mb-3">
                 <label for="<%= StringConstants.SURNAME_PARAM %>" class="form-label">Surname:</label>
-                <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_SURNAME)%>" name="<%= StringConstants.SURNAME_PARAM %>" required>
+                <% if (request.getAttribute(StringConstants.SIGNUP_SURNAME) != null) { %>
+                    <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_SURNAME)%>" name="<%= StringConstants.SURNAME_PARAM %>" required>
+                <% } else { %>
+                    <input type="text" class="form-control" name="<%= StringConstants.SURNAME_PARAM %>" required>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="<%= StringConstants.MIDDLE_NAME_PARAM %>" class="form-label">Middle name:</label>
-                <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_MIDDLE_NAME)%>" name="<%= StringConstants.MIDDLE_NAME_PARAM %>" required>
+                <% if (request.getAttribute(StringConstants.SIGNUP_MIDDLE_NAME) != null) { %>
+                    <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_MIDDLE_NAME)%>" name="<%= StringConstants.MIDDLE_NAME_PARAM %>" required>
+                <% } else { %>
+                    <input type="text" class="form-control" name="<%= StringConstants.MIDDLE_NAME_PARAM %>" required>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="<%= StringConstants.FIRST_NAME_PARAM %>" class="form-label">First name:</label>
-                <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_FIRST_NAME)%>" name="<%= StringConstants.FIRST_NAME_PARAM %>" required>
+                <% if (request.getAttribute(StringConstants.SIGNUP_FIRST_NAME) != null) { %>
+                    <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_FIRST_NAME)%>" name="<%= StringConstants.FIRST_NAME_PARAM %>" required>
+                <% } else { %>
+                    <input type="text" class="form-control" name="<%= StringConstants.FIRST_NAME_PARAM %>" required>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="<%= StringConstants.EMAIL_PARAM %>" class="form-label">Email:</label>
-                <input type="email" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_EMAIL)%>" name="<%= StringConstants.EMAIL_PARAM %>" required>
+                <% if (request.getAttribute(StringConstants.SIGNUP_EMAIL) != null) { %>
+                    <input type="email" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_EMAIL)%>" name="<%= StringConstants.EMAIL_PARAM %>" required>
+                <% } else { %>
+                    <input type="email" class="form-control" name="<%= StringConstants.EMAIL_PARAM %>" required>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="<%= StringConstants.PHONE_PARAM %>" class="form-label">Phone:</label>
-                <input type="tel" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_PHONE)%>" name="<%= StringConstants.PHONE_PARAM %>" required>
+                <% if (request.getAttribute(StringConstants.SIGNUP_PHONE) != null) { %>
+                    <input type="tel" class="form-control" value="<%=request.getAttribute(StringConstants.SIGNUP_PHONE)%>" name="<%= StringConstants.PHONE_PARAM %>" required>
+                <% } else { %>
+                    <input type="tel" class="form-control" name="<%= StringConstants.PHONE_PARAM %>" required>
+                <% } %>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn text-light" style="background: #c1177c;">Sign Up</button>

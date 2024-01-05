@@ -42,8 +42,12 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String error = request.getParameter("error");
 
         if (request.getSession().getAttribute(StringConstants.USER_SESSION) == null || redisService.getValueByKey(StringConstants.USER_SESSION) == null) {
+            if (error != null && error.contains("incorrect_username_password")) {
+                request.setAttribute("loginError", "Invalid username or password");
+            }
             request.getRequestDispatcher(StringConstants.LOGIN_PAGE).forward(request, response);
         } else request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
     }
@@ -79,7 +83,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 // TODO make failed login flow
                 String url = URLUtils.getFullURL(URLUtils.LOGIN_URL);
-                response.sendRedirect(url);
+                response.sendRedirect(url + "?error=incorrect_username_password");
             }
         }
         

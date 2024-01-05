@@ -27,7 +27,6 @@ public class SignupServlet extends HttpServlet {
 
     private final AccountDatabaseService dbService = AccountDatabaseServiceImpl.getInstance();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,7 +38,35 @@ public class SignupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect(StringConstants.SIGNUP_PAGE);
+        String error = request.getParameter(StringConstants.PARAM_ERROR);
+        if (error != null && error.contains("account_existed")) {            
+            String id = (String)request.getSession().getAttribute(StringConstants.SIGNUP_ID);
+            String password = (String)request.getSession().getAttribute(StringConstants.SIGNUP_PASSWORD);
+            String surname = (String)request.getSession().getAttribute(StringConstants.SIGNUP_SURNAME);
+            String middleName = (String)request.getSession().getAttribute(StringConstants.SIGNUP_MIDDLE_NAME);
+            String firstName = (String)request.getSession().getAttribute(StringConstants.SIGNUP_FIRST_NAME);
+            String phone = (String)request.getSession().getAttribute(StringConstants.SIGNUP_PHONE);
+            String email = (String)request.getSession().getAttribute(StringConstants.SIGNUP_EMAIL);
+            
+            request.getSession().removeAttribute(StringConstants.SIGNUP_ID);
+            request.getSession().removeAttribute(StringConstants.SIGNUP_PASSWORD);
+            request.getSession().removeAttribute(StringConstants.SIGNUP_SURNAME);
+            request.getSession().removeAttribute(StringConstants.SIGNUP_MIDDLE_NAME);
+            request.getSession().removeAttribute(StringConstants.SIGNUP_FIRST_NAME);
+            request.getSession().removeAttribute(StringConstants.SIGNUP_PHONE);
+            request.getSession().removeAttribute(StringConstants.SIGNUP_EMAIL);
+            
+            request.setAttribute("signUpError", "username existed");
+            
+            request.setAttribute(StringConstants.SIGNUP_ID, id);
+            request.setAttribute(StringConstants.SIGNUP_PASSWORD, password);
+            request.setAttribute(StringConstants.SIGNUP_SURNAME, surname);
+            request.setAttribute(StringConstants.SIGNUP_MIDDLE_NAME, middleName);
+            request.setAttribute(StringConstants.SIGNUP_FIRST_NAME, firstName);
+            request.setAttribute(StringConstants.SIGNUP_PHONE, phone);
+            request.setAttribute(StringConstants.SIGNUP_EMAIL, email);
+        }
+        request.getRequestDispatcher(StringConstants.SIGNUP_PAGE).forward(request, response);
     }
 
     /**
@@ -76,7 +103,16 @@ public class SignupServlet extends HttpServlet {
             dbService.addUser(user);
             response.sendRedirect(URLUtils.BASE_HOME);
         } else {
-            response.sendRedirect(URLUtils.SIGNUP_URL);
+            request.getSession().setAttribute(StringConstants.SIGNUP_ID, id);
+            request.getSession().setAttribute(StringConstants.SIGNUP_PASSWORD, password);
+            request.getSession().setAttribute(StringConstants.SIGNUP_SURNAME, surname);
+            request.getSession().setAttribute(StringConstants.SIGNUP_MIDDLE_NAME, middleName);
+            request.getSession().setAttribute(StringConstants.SIGNUP_FIRST_NAME, firstName);
+            request.getSession().setAttribute(StringConstants.SIGNUP_PHONE, phone);
+            request.getSession().setAttribute(StringConstants.SIGNUP_EMAIL, email);
+            
+            String url = URLUtils.getFullURL(URLUtils.SIGNUP_URL);
+            response.sendRedirect(url + "?" + StringConstants.PARAM_ERROR + "=account_existed");
         }
     }
 

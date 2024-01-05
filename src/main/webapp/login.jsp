@@ -26,6 +26,51 @@
                 flex: 1;
             }
         </style>
+        <script>
+            function validateForm() {
+                var username = document.forms["loginForm"]["<%= StringConstants.USERNAME_PARAM %>"].value;
+                var password = document.forms["loginForm"]["<%= StringConstants.PASSWORD_PARAM %>"].value;
+
+                // Check if username is empty
+                if (username === "") {
+                    alert("Please enter your username.");
+                    return false;
+                }
+
+                // Check if username contains special characters or spaces
+                if (!/^[a-zA-Z0-9]+$/.test(username)) {
+                    alert("Username should not contain special characters or spaces.");
+                    return false;
+                }
+
+                // Check if username has at least 5 characters
+                if (username.length < 5) {
+                    alert("Username should have at least 5 characters.");
+                    return false;
+                }
+
+                // Check if password is empty
+                if (password === "") {
+                    alert("Please enter your password.");
+                    return false;
+                }
+
+                // Check if password contains spaces
+                if (/\s/.test(password)) {
+                    alert("Password should not contain spaces.");
+                    return false;
+                }
+
+                // Check if password has at least 6 characters
+                if (password.length < 6) {
+                    alert("Password should have at least 6 characters.");
+                    return false;
+                }
+
+                // If all checks pass, allow form submission
+                return true;
+            }
+        </script>
     </head>
     
     <body>
@@ -34,11 +79,11 @@
     <%@ include file="parts/header.jsp" %>
 
     <!-- Body -->
-    <div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">        
         <div class="text-center mb-3">
-            <h2 style="color: #511b11">Login</h2>
+            <h2>Login</h2>
         </div>
-        <form action="/simple_chatbot/login" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
+        <form action="/simple_chatbot/login" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;" onsubmit="return validateForm()" name="loginForm">            
             <div class="mb-3">
                 <label for="<%= StringConstants.USERNAME_PARAM %>" class="form-label">Username:</label>
                 <input type="text" class="form-control" name="<%= StringConstants.USERNAME_PARAM %>" required>
@@ -49,10 +94,17 @@
                 <input type="password" class="form-control" name="<%= StringConstants.PASSWORD_PARAM %>" required>
                 <div class="invalid-feedback">Please enter your password.</div>
             </div>
-                <button class="btn text-light" style="background: #5860c3;" type="submit">Login</button>
+            <% if (request.getAttribute("loginError") != null) { %>
+            <div class="alert alert-danger">
+                <%= request.getAttribute("loginError") %>
+            </div>
+            <% } %>
+            <div class="d-flex justify-content-center">
+                <button class="btn text-light" style="background: #c1177c;" type="submit">Login</button>
+            </div>  
         </form>
         <div class="mt-3">
-            Don't have an account? <a href="/simple_chatbot/signup">Sign Up</a>
+            Don't have an account? <a style="color: #c1177c" href="/simple_chatbot/signup">Sign Up</a>
         </div>
     </div>
 

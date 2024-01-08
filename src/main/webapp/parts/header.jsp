@@ -11,10 +11,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link p-3" href="#" style="padding-top: 5px; color: #fff; font-size: 2.125rem; font-weight: 400; font-stretch: 100%;">About</a>
+                    <a class="nav-link p-3" href="/simple_chatbot/about.jsp" style="padding-top: 5px; color: #fff; font-size: 2.125rem; font-weight: 400; font-stretch: 100%;">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link p-3" href="#" style="padding-top: 5px; color: #fff; font-size: 2.125rem; font-weight: 400; font-stretch: 100%;">Contact</a>
+                    <a class="nav-link p-3" href="/simple_chatbot/contact.jsp" style="padding-top: 5px; color: #fff; font-size: 2.125rem; font-weight: 400; font-stretch: 100%;">Contact</a>
                 </li>
             </ul>
         </div>

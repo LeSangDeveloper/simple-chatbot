@@ -38,10 +38,10 @@ public class StringConstants {
     public static String ADMIN_UPDATE_PASSWORD_PAGE = "/admin/update_password.jsp";
     public static String ADMIN_PAGE = "/admin/admin.jsp";
     
-    public static String PARAM_ERROR = "error";
-    
     public static String ATTRIBUTE_CHAT_MESSAGES = "chatMessages";
     public static String ATTRIBUTE_CONVERSATIONS = "conservations";
     public static String ATTRIBUTE_CHAT_USER = "username";
     public static String ATTRIBUTE_ACCOUNTS_LIST = "accountList";
+    
+    public static String QUESTION_MARK = "?";
 }

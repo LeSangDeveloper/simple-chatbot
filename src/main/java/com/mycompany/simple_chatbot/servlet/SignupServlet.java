@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.config.util.ErrorMessageUtils;
 import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
 import com.mycompany.simple_chatbot.model.Account;
@@ -38,8 +39,8 @@ public class SignupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String error = request.getParameter(StringConstants.PARAM_ERROR);
-        if (error != null && error.contains("account_existed")) {            
+        String error = request.getParameter(ErrorMessageUtils.PARAM_ERROR);
+        if (error != null && error.contains(ErrorMessageUtils.ERROR_ACCONT_EXITED)) {            
             String id = (String)request.getSession().getAttribute(StringConstants.SIGNUP_ID);
             String password = (String)request.getSession().getAttribute(StringConstants.SIGNUP_PASSWORD);
             String surname = (String)request.getSession().getAttribute(StringConstants.SIGNUP_SURNAME);
@@ -56,7 +57,7 @@ public class SignupServlet extends HttpServlet {
             request.getSession().removeAttribute(StringConstants.SIGNUP_PHONE);
             request.getSession().removeAttribute(StringConstants.SIGNUP_EMAIL);
             
-            request.setAttribute("signUpError", "username existed");
+            request.setAttribute(ErrorMessageUtils.PARAM_SIGNUP_ERROR, ErrorMessageUtils.MESSAGE_ACCONT_EXITED);
             
             request.setAttribute(StringConstants.SIGNUP_ID, id);
             request.setAttribute(StringConstants.SIGNUP_PASSWORD, password);
@@ -112,7 +113,7 @@ public class SignupServlet extends HttpServlet {
             request.getSession().setAttribute(StringConstants.SIGNUP_EMAIL, email);
             
             String url = URLUtils.getFullURL(URLUtils.SIGNUP_URL);
-            response.sendRedirect(url + "?" + StringConstants.PARAM_ERROR + "=account_existed");
+            response.sendRedirect(url + StringConstants.QUESTION_MARK + ErrorMessageUtils.addParamError(ErrorMessageUtils.ERROR_ACCONT_EXITED));
         }
     }
 

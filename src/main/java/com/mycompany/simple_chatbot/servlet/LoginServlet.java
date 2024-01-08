@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.config.util.ErrorMessageUtils;
 import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.TokenUtils;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
@@ -42,11 +43,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String error = request.getParameter("error");
+        String error = request.getParameter(ErrorMessageUtils.PARAM_ERROR);
 
         if (request.getSession().getAttribute(StringConstants.USER_SESSION) == null || redisService.getValueByKey(StringConstants.USER_SESSION) == null) {
-            if (error != null && error.contains("incorrect_username_password")) {
-                request.setAttribute("loginError", "Invalid username or password");
+            if (error != null && error.contains(ErrorMessageUtils.ERROR_INVALID_LOGIN_INFO)) {
+                request.setAttribute(ErrorMessageUtils.PARAM_LOGIN_ERROR, ErrorMessageUtils.MESSAGE_INCORRECT_LOGIN_INFO);
             }
             request.getRequestDispatcher(StringConstants.LOGIN_PAGE).forward(request, response);
         } else request.getRequestDispatcher(StringConstants.CHAT_PAGE).forward(request, response);
@@ -83,7 +84,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 // TODO make failed login flow
                 String url = URLUtils.getFullURL(URLUtils.LOGIN_URL);
-                response.sendRedirect(url + "?error=incorrect_username_password");
+                response.sendRedirect(url + StringConstants.QUESTION_MARK + ErrorMessageUtils.addParamError(ErrorMessageUtils.ERROR_INVALID_LOGIN_INFO));
             }
         }
         

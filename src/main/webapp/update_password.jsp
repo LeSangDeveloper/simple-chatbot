@@ -12,7 +12,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Update Password</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<!--        <link href="http://localhost:3000/css/bootstrap.min.css" rel="stylesheet">-->
         <style>
             body {
                 margin: 0;
@@ -33,6 +32,51 @@
                 background: #a50064;
             }
         </style>
+        <script>
+            function validateForm() {
+                var old_password = document.forms["updatePasswordForm"]["<%= StringConstants.OLD_PASSWORD_PARAM %>"].value;
+                var new_password = document.forms["updatePasswordForm"]["<%= StringConstants.NEW_PASSWORD_PARAM %>"].value;
+
+                // Check if old password is empty
+                if (old_password === "") {
+                    alert("Please enter your old password.");
+                    return false;
+                }
+
+                // Check if old password contains spaces
+                if (/\s/.test(old_password)) {
+                    alert("Old password should not contain spaces.");
+                    return false;
+                }
+
+                // Check if old password has at least 6 characters
+                if (old_password.length < 6) {
+                    alert("Old password should have at least 6 characters.");
+                    return false;
+                }
+
+                // Check if new password is empty
+                if (new_password === "") {
+                    alert("Please enter your new password.");
+                    return false;
+                }
+                
+                // Check if new password contains spaces
+                if (/\s/.test(new_password)) {
+                    alert("new password should not contain spaces.");
+                    return false;
+                }
+
+                // Check if new password has at least 6 characters
+                if (new_password.length < 6) {
+                    alert("New password should have at least 6 characters.");
+                    return false;
+                }
+
+                // If all checks pass, allow form submission
+                return true;
+            }
+        </script>
     </head>
     <body>
         <!-- Include Header -->
@@ -43,14 +87,14 @@
             <div class="text-center mb-3">
                 <h2>Update Password</h2>
             </div>
-            <form action="/simple_chatbot/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
+            <form action="/simple_chatbot/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;" onsubmit="return validateForm()" name="updatePasswordForm">
                 <div class="mb-3">
-                    <label for="<%= StringConstants.OLD_PASSWORD_PARAM %>" class="form-label">New Password</label>
+                    <label for="<%= StringConstants.OLD_PASSWORD_PARAM %>" class="form-label">Old Password</label>
                     <input type="password" class="form-control" name="<%= StringConstants.OLD_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your old password.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="<%= StringConstants.NEW_PASSWORD_PARAM %>" class="form-label">Old Password:</label>
+                    <label for="<%= StringConstants.NEW_PASSWORD_PARAM %>" class="form-label">New Password:</label>
                     <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your new password.</div>
                 </div>

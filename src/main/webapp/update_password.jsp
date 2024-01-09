@@ -77,6 +77,11 @@
                 // If all checks pass, allow form submission
                 return true;
             }
+            
+            function cancelUpdate() {
+                // Navigate back to the previous page
+                window.history.back();
+            }
         </script>
     </head>
     <body>
@@ -105,8 +110,9 @@
                 </div>
                 <% } %>
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-pink text-light" type="submit">Confirm</button>
-                </div>  
+                    <button class="btn btn-pink text-light" style="margin-right: 1.125rem" type="submit">Confirm</button>
+                    <button class="btn btn-secondary" type="button" onclick="cancelUpdate()">Cancel</button>
+                </div>   
             </form>
         </div>
 

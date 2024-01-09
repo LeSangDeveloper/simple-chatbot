@@ -32,6 +32,37 @@
                 background: #a50064;
             }
         </style>
+        <script>
+            function validateForm() {
+                var new_password = document.forms["updatePasswordForm"]["<%= StringConstants.NEW_PASSWORD_PARAM %>"].value;
+
+                // Check if new password is empty
+                if (new_password === "") {
+                    alert("Please enter your new password.");
+                    return false;
+                }
+                
+                // Check if new password contains spaces
+                if (/\s/.test(new_password)) {
+                    alert("new password should not contain spaces.");
+                    return false;
+                }
+
+                // Check if new password has at least 6 characters
+                if (new_password.length < 6) {
+                    alert("New password should have at least 6 characters.");
+                    return false;
+                }
+
+                // If all checks pass, allow form submission
+                return true;
+            }
+            
+            function cancelUpdate() {
+                // Navigate back to the previous page
+                window.history.back();
+            }
+        </script>
     </head>
     <body>
         <!-- Include Header -->
@@ -56,7 +87,7 @@
             <div class="text-center mb-3">
                 <h2>Update Password</h2>
             </div>
-            <form action="/simple_chatbot/admin/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;">
+            <form action="/simple_chatbot/admin/update-password" method="post" class="needs-validation" novalidate style="max-width: 400px; width: 100%;" onsubmit="return validateForm()" name="updatePasswordForm">
                 <div class="mb-3">
                     <label for="<%= StringConstants.USERNAME_PARAM %>" class="form-label">Account</label>
                     <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.USERNAME_PARAM)%>" name="<%= StringConstants.USERNAME_PARAM %>" disabled="disabled" required>
@@ -65,12 +96,13 @@
                     <input type="text" class="form-control" value="<%=request.getAttribute(StringConstants.USERNAME_PARAM)%>" name="<%= StringConstants.USERNAME_PARAM %>" hidden required>
                 </div>
                 <div class="mb-3">
-                    <label for="<%= StringConstants.NEW_PASSWORD_PARAM %>" class="form-label">Old Password:</label>
+                    <label for="<%= StringConstants.NEW_PASSWORD_PARAM %>" class="form-label">New Password:</label>
                     <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your new password.</div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-pink text-light" type="submit">Confirm</button>
+                    <button class="btn btn-pink text-light" style="margin-right: 1.125rem" type="submit">Confirm</button>
+                    <button class="btn btn-secondary" type="button" onclick="cancelUpdate()">Cancel</button>
                 </div>  
             </form>
         </div>

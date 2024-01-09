@@ -12,12 +12,15 @@ public class ErrorMessageUtils {
     public static String PARAM_ERROR = "error";
     public static String PARAM_SIGNUP_ERROR = "signUpError";
     public static String PARAM_LOGIN_ERROR = "loginError";
-
+    public static String PARAM_UPDATE_PASSWORD_ERROR = "updatePasswordError";
+    
     public static String MESSAGE_ACCONT_EXITED = "username existed";
     public static String MESSAGE_INCORRECT_LOGIN_INFO = "Invalid username or password";
+    public static String MESSAGE_INCORRECT_OLD_PASSWORD = "Incorrect old password";
     
     public static String ERROR_ACCONT_EXITED = "account_existed";
     public static String ERROR_INVALID_LOGIN_INFO = "incorrect_username_password";
+    public static String ERROR_INVALID_OLD_PASSWORD = "incorrect_old_password";
     
     private static final String EQUAL_MARK = "=";
     public static String addParamError(String error) {

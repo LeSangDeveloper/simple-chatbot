@@ -4,6 +4,7 @@
     Author     : lesan
 --%>
 
+<%@page import="com.mycompany.simple_chatbot.config.util.ErrorMessageUtils"%>
 <%@page import="com.mycompany.simple_chatbot.config.util.StringConstants"%>
 <!DOCTYPE html>
 <html>
@@ -39,9 +40,9 @@
             <div class="text-center mb-4">
                 <h2>Sign Up</h2>
             </div>
-            <% if (request.getAttribute("signUpError") != null) { %>
+            <% if (request.getAttribute(ErrorMessageUtils.PARAM_SIGNUP_ERROR) != null) { %>
             <div class="alert alert-danger">
-                <%= request.getAttribute("signUpError") %>
+                <%= request.getAttribute(ErrorMessageUtils.PARAM_SIGNUP_ERROR) %>
             </div>
             <% } %>
             <div class="w-100 max-width-500"> <!-- Set a maximum width for the form -->

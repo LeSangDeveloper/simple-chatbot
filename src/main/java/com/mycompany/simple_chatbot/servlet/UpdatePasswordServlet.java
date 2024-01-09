@@ -4,6 +4,7 @@
  */
 package com.mycompany.simple_chatbot.servlet;
 
+import com.mycompany.simple_chatbot.config.util.ErrorMessageUtils;
 import com.mycompany.simple_chatbot.config.util.StringConstants;
 import com.mycompany.simple_chatbot.config.util.TokenUtils;
 import com.mycompany.simple_chatbot.config.util.URLUtils;
@@ -29,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 public class UpdatePasswordServlet extends HttpServlet {
 
     private final AccountDatabaseService accDbService = AccountDatabaseServiceImpl.getInstance();
-    private final RedisService redisService = RedisServiceImpl.getInstance();
     
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -42,6 +42,12 @@ public class UpdatePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String error = request.getParameter(ErrorMessageUtils.PARAM_ERROR);
+
+        if (error  != null && error.contains(ErrorMessageUtils.ERROR_INVALID_OLD_PASSWORD)) {
+            request.setAttribute(ErrorMessageUtils.PARAM_UPDATE_PASSWORD_ERROR, ErrorMessageUtils.MESSAGE_INCORRECT_OLD_PASSWORD);        
+        }
+        
         request.getRequestDispatcher(StringConstants.UPDATE_PASSWORD_PAGE).forward(request, response);
     }
 
@@ -73,7 +79,7 @@ public class UpdatePasswordServlet extends HttpServlet {
                 response.sendRedirect(url);
             } else {
                 String url = URLUtils.getFullURL(URLUtils.UPDATE_PASSWORD_URL);
-                response.sendRedirect(url);
+                response.sendRedirect(url + StringConstants.QUESTION_MARK + ErrorMessageUtils.addParamError(ErrorMessageUtils.ERROR_INVALID_OLD_PASSWORD));
             }
         }
     }

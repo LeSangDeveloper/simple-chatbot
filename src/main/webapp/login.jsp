@@ -4,6 +4,7 @@
     Author     : lesan
 --%>
 
+<%@page import="com.mycompany.simple_chatbot.config.util.ErrorMessageUtils"%>
 <%@page import="com.mycompany.simple_chatbot.config.util.StringConstants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -110,9 +111,9 @@
                 <input type="password" class="form-control" name="<%= StringConstants.PASSWORD_PARAM %>" required>
                 <div class="invalid-feedback">Please enter your password.</div>
             </div>
-            <% if (request.getAttribute("loginError") != null) { %>
+            <% if (request.getAttribute(ErrorMessageUtils.PARAM_LOGIN_ERROR) != null) { %>
             <div class="alert alert-danger">
-                <%= request.getAttribute("loginError") %>
+                <%= request.getAttribute(ErrorMessageUtils.PARAM_LOGIN_ERROR) %>
             </div>
             <% } %>
             <div class="d-flex justify-content-center">

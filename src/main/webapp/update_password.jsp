@@ -4,6 +4,7 @@
     Author     : lesan
 --%>
 
+<%@page import="com.mycompany.simple_chatbot.config.util.ErrorMessageUtils"%>
 <%@page import="com.mycompany.simple_chatbot.config.util.StringConstants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -98,6 +99,11 @@
                     <input type="password" class="form-control" name="<%= StringConstants.NEW_PASSWORD_PARAM %>" required>
                     <div class="invalid-feedback">Please enter your new password.</div>
                 </div>
+                <% if (request.getAttribute(ErrorMessageUtils.PARAM_UPDATE_PASSWORD_ERROR) != null) { %>
+                <div class="alert alert-danger">
+                    <%= request.getAttribute(ErrorMessageUtils.PARAM_UPDATE_PASSWORD_ERROR) %>
+                </div>
+                <% } %>
                 <div class="d-flex justify-content-center">
                     <button class="btn btn-pink text-light" type="submit">Confirm</button>
                 </div>  
